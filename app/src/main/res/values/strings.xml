@@ -1,3 +1,21 @@
 <resources>
     <string name="app_name">myroadmapapp</string>
+    <string name="nav_profile">Профиль</string>
+    <string name="nav_hackathon">Хакатоны</string>
+    <string name="nav_routes">Направления</string>
+    <string name="nav_todos">Мои направления</string>
+    <string name="nav_todo">Направление</string>
+    <string name="community">Комьюнити</string>
+    <string name="nav_skills">Навыки</string>
+    <string name="nav_login">Вход</string>
+    <string name="nav_register">Регистрация</string>
+    <string name="nav_forgot_password">Восстановление пароля</string>
+    <string name="nav_settings">Настройки</string>
+
+
+    <string name="username">Имя пользователя</string>
+    <string name="password">Пароль</string>
+    <string name="email">Эл. почта</string>
+    <string name="hide_password">Скрыть пароль</string>
+    <string name="show_password">Показать пароль</string>
 </resources>
