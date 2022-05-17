@@ -1,4 +1,4 @@
-package ru.boringowl.myroadmapapp.ui.theme
+package ru.boringowl.myroadmapapp.presentation.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

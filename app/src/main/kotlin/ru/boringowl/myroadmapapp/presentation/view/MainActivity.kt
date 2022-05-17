@@ -1,4 +1,4 @@
-package ru.boringowl.myroadmapapp
+package ru.boringowl.myroadmapapp.presentation.view
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -10,7 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import ru.boringowl.myroadmapapp.ui.theme.MyroadmapappTheme
+import ru.boringowl.myroadmapapp.presentation.theme.MyroadmapappTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

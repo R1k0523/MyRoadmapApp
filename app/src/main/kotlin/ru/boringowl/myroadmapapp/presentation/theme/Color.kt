@@ -1,4 +1,4 @@
-package ru.boringowl.myroadmapapp.ui.theme
+package ru.boringowl.myroadmapapp.presentation.theme
 
 import androidx.compose.ui.graphics.Color
 
