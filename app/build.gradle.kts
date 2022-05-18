@@ -75,6 +75,11 @@ dependencies {
     implementation("io.github.microutils:kotlin-logging:1.12.5")
     implementation("io.coil-kt:coil-compose:2.0.0-rc03")
 
+    //Room lib
+    implementation("androidx.legacy:legacy-support-v4:1.0.0")
+    implementation("androidx.room:room-runtime:2.4.2")
+    kapt("androidx.room:room-compiler:2.4.2")
+
     //tests
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.3")
