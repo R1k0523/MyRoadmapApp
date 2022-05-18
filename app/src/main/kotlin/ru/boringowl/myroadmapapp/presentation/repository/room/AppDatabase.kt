@@ -2,7 +2,8 @@ package ru.boringowl.myroadmapapp.presentation.repository.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import ru.boringowl.myroadmapapp.presentation.repository.model.*
+import ru.boringowl.myroadmapapp.presentation.repository.room.dao.*
+import ru.boringowl.myroadmapapp.presentation.repository.room.model.*
 
 
 @Database(
@@ -17,6 +18,12 @@ import ru.boringowl.myroadmapapp.presentation.repository.model.*
 )
 abstract class AppDatabase : RoomDatabase() {
 
+    abstract fun hackDao(): HackathonDao
+    abstract fun routeDao(): RouteDao
+    abstract fun skillDao(): SkillDao
+    abstract fun skillTodoDao(): SkillTodoDao
+    abstract fun todoDao(): TodoDao
+    abstract fun userDao(): UserDao
     companion object {
         const val DATABASE_NAME = "roadmap_db"
     }

@@ -1,4 +1,4 @@
-package ru.boringowl.myroadmapapp.presentation.repository.converters
+package ru.boringowl.myroadmapapp.presentation.repository.room.converters
 
 import androidx.room.TypeConverter
 import ru.boringowl.myroadmapapp.model.UserRole

@@ -1,4 +1,4 @@
-package ru.boringowl.myroadmapapp.presentation.repository.model
+package ru.boringowl.myroadmapapp.presentation.repository.room.model
 
 
 import androidx.room.*
