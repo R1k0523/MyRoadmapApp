@@ -37,24 +37,23 @@ fun HackathonsScreen(
     Scaffold(
         topBar = {
             SmallTopAppBar(title = {
-                Column {
+                Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
+                        modifier = Modifier.fillMaxWidth(0.5f),
                         text = "Хакатоны",
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold
+                    )
+                    Button(
+                        onClick = {viewModel.delete()},
+                        content = { Text("Удалить") },
                     )
                 }
             })
         },
         floatingActionButtonPosition = FabPosition.End,
         floatingActionButton = { FloatingActionButton(onClick = {
-            viewModel.add(Hackathon().also {
-                it.hackId = UUID.randomUUID()
-                it.source = "vk.com"
-                it.imageUrl = "https://i1.sndcdn.com/avatars-ZKeowRYxnn6IsEzN-f56n4w-t500x500.jpg"
-                it.hackTitle = "123123123123"
-                it.hackDescription = "11111 1 23 12 3 12 312 3 1234134 13 4 134 1 34 13 4 13  1331131313 413134134"
-            })
+            viewModel.fetchAndSave()
         }){
             Text("+")
         } },

@@ -1,7 +1,6 @@
-package ru.boringowl.myroadmapapp.presentation.repository.room.model
+package ru.boringowl.myroadmapapp.data.room.model
 
 
-import androidx.annotation.NonNull
 import androidx.room.*
 import java.util.*
 

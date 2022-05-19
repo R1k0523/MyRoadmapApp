@@ -10,32 +10,27 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
 import ru.boringowl.myroadmapapp.model.Hackathon
-import ru.boringowl.myroadmapapp.presentation.repository.room.repos.HackathonRepository
+import ru.boringowl.myroadmapapp.data.room.repos.HackathonRepository
 import javax.inject.Inject
 
 @HiltViewModel
-class HackathonViewModel @Inject constructor(private val repository: HackathonRepository) : ViewModel() {
+class HackathonViewModel @Inject constructor(private val repository: HackathonRepository) :
+    ViewModel() {
 
     private val _modelList = MutableStateFlow<List<Hackathon>>(emptyList())
     val modelList = _modelList.asStateFlow()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.getAllNotes().distinctUntilChanged()
-                .collect { l ->
-                     if (l.isEmpty()) {
-                         Log.d("Empty", ": Empty list")
-                     }else {
-                         _modelList.value = l.map { it.toModel() }
-                     }
-
-                }
-
+            repository.get().distinctUntilChanged()
+                .collect { l -> _modelList.value = l.map { it.toModel() } }
         }
     }
 
-     fun add(model: Hackathon) = viewModelScope.launch { repository.add(model) }
-     fun update(model: Hackathon) = viewModelScope.launch { repository.update(model) }
-     fun remove(model: Hackathon) = viewModelScope.launch { repository.delete(model) }
+    fun fetchAndSave() = viewModelScope.launch { repository.fetchAndSave() }
+    fun add(model: Hackathon) = viewModelScope.launch { repository.add(model) }
+    fun update(model: Hackathon) = viewModelScope.launch { repository.update(model) }
+    fun delete(model: Hackathon) = viewModelScope.launch { repository.delete(model) }
+    fun delete() = viewModelScope.launch { repository.delete() }
 
 }

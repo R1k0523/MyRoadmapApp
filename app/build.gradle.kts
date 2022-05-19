@@ -28,6 +28,10 @@ android {
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
     }
+    buildTypes.forEach {
+        it.buildConfigField("String", "MAIN_LINK", "\"https://myroadmapserver.herokuapp.com/\"")
+    }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8
@@ -80,6 +84,16 @@ dependencies {
     implementation("androidx.room:room-runtime:2.4.2")
     kapt("androidx.room:room-compiler:2.4.2")
     implementation("androidx.room:room-ktx:2.4.2")
+    //data store
+    implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    //retrofit
+
+    //retrofit - networking
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
+    implementation("androidx.paging:paging-runtime-ktx:3.1.1")
 
 
     //tests

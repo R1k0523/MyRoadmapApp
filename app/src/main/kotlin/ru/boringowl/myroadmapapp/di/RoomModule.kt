@@ -7,8 +7,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import ru.boringowl.myroadmapapp.presentation.repository.room.AppDatabase
-import ru.boringowl.myroadmapapp.presentation.repository.room.dao.*
+import ru.boringowl.myroadmapapp.data.room.AppDatabase
 import javax.inject.Singleton
 
 

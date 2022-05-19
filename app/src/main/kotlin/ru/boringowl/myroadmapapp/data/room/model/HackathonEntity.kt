@@ -1,13 +1,11 @@
-package ru.boringowl.myroadmapapp.presentation.repository.room.model
+package ru.boringowl.myroadmapapp.data.room.model
 
-import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ru.boringowl.myroadmapapp.model.Hackathon
 import java.time.LocalDateTime
 import java.util.*
-import javax.annotation.Nonnull
 
 @Entity(tableName = "hackathons")
 class HackathonEntity(
@@ -19,7 +17,7 @@ class HackathonEntity(
     @ColumnInfo(name="hack_description")
     var hackDescription: String = "",
     @ColumnInfo(name="publish_date")
-    var publishDate: LocalDateTime = LocalDateTime.now(),
+    var publishDate: String,
     @ColumnInfo(name="source")
     var source: String = "",
     @ColumnInfo(name="date")

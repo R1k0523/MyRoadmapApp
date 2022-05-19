@@ -1,4 +1,4 @@
-package ru.boringowl.myroadmapapp.presentation.repository.room.dao
+package ru.boringowl.myroadmapapp.data.room.dao
 
 import androidx.room.Delete
 import androidx.room.Insert

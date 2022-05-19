@@ -1,10 +1,10 @@
-package ru.boringowl.myroadmapapp.presentation.repository.room.dao
+package ru.boringowl.myroadmapapp.data.room.dao
 
 import androidx.room.Dao
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
-import ru.boringowl.myroadmapapp.presentation.repository.room.model.RouteEntity
-import ru.boringowl.myroadmapapp.presentation.repository.room.model.RouteWithSkills
+import ru.boringowl.myroadmapapp.data.room.model.RouteEntity
+import ru.boringowl.myroadmapapp.data.room.model.RouteWithSkills
 import java.util.*
 
 @Dao

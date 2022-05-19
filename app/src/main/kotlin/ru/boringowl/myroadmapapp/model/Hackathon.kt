@@ -7,7 +7,7 @@ class Hackathon {
     var hackId: UUID? = null
     var hackTitle: String = ""
     var hackDescription: String = ""
-    var publishDate: LocalDateTime = LocalDateTime.now()
+    var publishDate: String = ""
     var source: String = ""
     var date: String? = ""
     var registration: String? = ""

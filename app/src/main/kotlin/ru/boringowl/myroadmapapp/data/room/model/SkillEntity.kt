@@ -1,4 +1,4 @@
-package ru.boringowl.myroadmapapp.presentation.repository.room.model
+package ru.boringowl.myroadmapapp.data.room.model
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

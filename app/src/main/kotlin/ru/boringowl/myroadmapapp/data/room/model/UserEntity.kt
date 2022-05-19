@@ -1,6 +1,5 @@
-package ru.boringowl.myroadmapapp.presentation.repository.room.model
+package ru.boringowl.myroadmapapp.data.room.model
 
-import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey

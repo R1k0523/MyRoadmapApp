@@ -1,11 +1,11 @@
-package ru.boringowl.myroadmapapp.presentation.repository.room
+package ru.boringowl.myroadmapapp.data.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import ru.boringowl.myroadmapapp.presentation.repository.room.converters.RoomConverters
-import ru.boringowl.myroadmapapp.presentation.repository.room.dao.*
-import ru.boringowl.myroadmapapp.presentation.repository.room.model.*
+import ru.boringowl.myroadmapapp.data.room.converters.RoomConverters
+import ru.boringowl.myroadmapapp.data.room.dao.*
+import ru.boringowl.myroadmapapp.data.room.model.*
 
 
 @Database(

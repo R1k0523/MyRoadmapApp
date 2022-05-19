@@ -11,4 +11,5 @@ import javax.inject.Inject
 @HiltViewModel
 class AccountViewModel @Inject constructor() : ViewModel() {
     var currentUser: User? by mutableStateOf(null)
+    var token: String? = null
 }
