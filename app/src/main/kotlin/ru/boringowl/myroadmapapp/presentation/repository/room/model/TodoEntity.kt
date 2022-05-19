@@ -1,6 +1,7 @@
 package ru.boringowl.myroadmapapp.presentation.repository.room.model
 
 
+import androidx.annotation.NonNull
 import androidx.room.*
 import java.util.*
 
@@ -8,7 +9,7 @@ import java.util.*
 class TodoEntity (
     @PrimaryKey
     @ColumnInfo(name="todo_id")
-    var todoId: UUID? = null,
+    var todoId: UUID,
     @ColumnInfo(name="header")
     var header: String = "",
 )

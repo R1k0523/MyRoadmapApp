@@ -26,7 +26,7 @@ class HackathonViewModel @Inject constructor(private val repository: HackathonRe
                      if (l.isEmpty()) {
                          Log.d("Empty", ": Empty list")
                      }else {
-                         _modelList.value = l
+                         _modelList.value = l.map { it.toModel() }
                      }
 
                 }

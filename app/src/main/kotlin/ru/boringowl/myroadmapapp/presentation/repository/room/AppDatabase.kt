@@ -2,6 +2,8 @@ package ru.boringowl.myroadmapapp.presentation.repository.room
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
+import androidx.room.TypeConverters
+import ru.boringowl.myroadmapapp.presentation.repository.room.converters.RoomConverters
 import ru.boringowl.myroadmapapp.presentation.repository.room.dao.*
 import ru.boringowl.myroadmapapp.presentation.repository.room.model.*
 
@@ -16,6 +18,7 @@ import ru.boringowl.myroadmapapp.presentation.repository.room.model.*
         UserEntity::class,
     ], version = 1, exportSchema = false
 )
+@TypeConverters(RoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun hackDao(): HackathonDao

@@ -18,6 +18,10 @@ class HackathonRepository @Inject constructor(private val dao: HackathonDao) {
     suspend fun update(model: Hackathon) = dao.update(entity(model))
     suspend fun delete(model: Hackathon) = dao.delete(entity(model))
     suspend fun deleteAll() = dao.delete()
-    fun getAllNotes(): Flow<List<Hackathon>> = dao.get().map{ f -> f.map { it.toModel() } }.flowOn(Dispatchers.IO).conflate()
+
+    fun getAllNotes(): Flow<List<HackathonEntity>> =
+        dao.get()
+            .flowOn(Dispatchers.IO)
+            .conflate()
 
 }

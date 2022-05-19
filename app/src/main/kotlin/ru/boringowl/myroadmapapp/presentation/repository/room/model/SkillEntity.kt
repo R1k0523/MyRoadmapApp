@@ -9,7 +9,7 @@ import java.util.*
 class SkillEntity (
     @PrimaryKey
     @ColumnInfo(name="skill_id")
-    var skillId: UUID? = null,
+    var skillId: UUID,
     @ColumnInfo(name="skill_name")
     var skillName: String = "",
     @ColumnInfo(name="necessity")

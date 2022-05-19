@@ -1,6 +1,8 @@
 package ru.boringowl.myroadmapapp.presentation.repository.room.model
 
+import androidx.annotation.NonNull
 import androidx.room.*
+import javax.annotation.Nonnull
 
 
 @Entity(tableName = "routes")

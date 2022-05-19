@@ -1,5 +1,6 @@
 package ru.boringowl.myroadmapapp.presentation.repository.room.model
 
+import androidx.annotation.NonNull
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -11,7 +12,7 @@ import java.util.*
 class UserEntity(
     @PrimaryKey
     @ColumnInfo(name="user_id")
-    var userId: UUID? = null,
+    var userId: UUID,
     @ColumnInfo(name="username")
     var username: String = "",
     @ColumnInfo(name="email")

@@ -16,7 +16,7 @@ fun RootScreen(
     navController: NavHostController = rememberNavController(),
 ) {
     val startDestination = when (accountViewModel.currentUser) {
-        null -> NavigationItem.Login
+        null -> NavigationItem.Hackathons
         else -> NavigationItem.Todo
     }
     NavHost(navController = navController, startDestination = startDestination.route) {

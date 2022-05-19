@@ -8,6 +8,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import ru.boringowl.myroadmapapp.R
 import ru.boringowl.myroadmapapp.presentation.view.auth.LoginScreen
+import ru.boringowl.myroadmapapp.presentation.view.hackathons.HackathonsScreen
 
 enum class NavigationItem(
     var route: String,
@@ -17,7 +18,9 @@ enum class NavigationItem(
 ) {
     Profile("profile", R.string.nav_profile, Icons.Rounded.Person, {}),
     Settings("settings", R.string.nav_settings, Icons.Rounded.Reorder, {}),
-    Hackathons("hackathons", R.string.nav_hackathon, Icons.Rounded.SafetyDivider, {}),
+    Hackathons("hackathons", R.string.nav_hackathon, Icons.Rounded.SafetyDivider, {
+        HackathonsScreen(it)
+    }),
     Todo("todo", R.string.nav_todos, Icons.Rounded.Inventory, {}),
     TodoDetails("todoDetails", R.string.nav_todo, Icons.Rounded.ViewList, {}),
     Community("community", R.string.community, Icons.Rounded.Groups, {}),

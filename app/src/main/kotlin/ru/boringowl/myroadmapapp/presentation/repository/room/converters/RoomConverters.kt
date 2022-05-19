@@ -6,9 +6,9 @@ import java.time.LocalDateTime
 
 object RoomConverters {
     @TypeConverter
-    fun toDate(dateString: String?): LocalDateTime? = dateString?.let { LocalDateTime.parse(it) }
+    fun toDate(dateString: String): LocalDateTime = dateString.let { LocalDateTime.parse(it) }
     @TypeConverter
-    fun toDateString(date: LocalDateTime?): String? = date?.toString()
+    fun toDateString(date: LocalDateTime): String = date.toString()
     @TypeConverter
     fun stringToRole(name: String): UserRole = UserRole.valueOf(name)
     @TypeConverter
