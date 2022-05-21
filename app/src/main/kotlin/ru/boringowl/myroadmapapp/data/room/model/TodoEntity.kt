@@ -2,6 +2,8 @@ package ru.boringowl.myroadmapapp.data.room.model
 
 
 import androidx.room.*
+import ru.boringowl.myroadmapapp.model.Hackathon
+import ru.boringowl.myroadmapapp.model.Todo
 import java.util.*
 
 @Entity(tableName = "todos")
@@ -11,7 +13,19 @@ class TodoEntity (
     var todoId: UUID,
     @ColumnInfo(name="header")
     var header: String = "",
-)
+)  {
+    @ColumnInfo(name="uploaded")
+    var uploaded: Boolean = true
+    fun toModel(): Todo = Todo().also {
+        it.todoId = todoId
+        it.header = header
+    }
+
+    constructor(model: Todo) : this(
+        model.todoId!!,
+        model.header
+    )
+}
 
 data class TodoWithSkills(
     @Embedded val todo: TodoEntity,

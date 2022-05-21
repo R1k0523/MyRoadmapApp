@@ -1,6 +1,5 @@
 package ru.boringowl.myroadmapapp.data.network
 
-import android.service.autofill.UserData
 import retrofit2.http.*
 import ru.boringowl.myroadmapapp.model.*
 
@@ -13,11 +12,11 @@ interface UserApi {
             UserTokenData
 
     @POST("${ConstantsServer.todoEndpoint}/register")
-    suspend fun register(@Body userData: UserData) :
+    suspend fun register(@Body userData: RegisterData) :
             UserTokenData
 
     @POST("${ConstantsServer.todoEndpoint}/resetPassword")
-    suspend fun resetPassword(@Body resetData: ResetPasswordData) :
+    suspend fun resetPassword(@Body resetData: RestorePasswordData) :
             String
 
 }

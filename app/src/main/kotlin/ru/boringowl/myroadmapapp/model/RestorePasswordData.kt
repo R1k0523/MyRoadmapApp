@@ -1,6 +1,6 @@
 package ru.boringowl.myroadmapapp.model
 
 class RestorePasswordData {
-    val oldPassword: String = ""
-    val newPassword: String = ""
+    val username: String = ""
+    val email: String = ""
 }

@@ -22,8 +22,7 @@ class HackathonViewModel @Inject constructor(private val repository: HackathonRe
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
-            repository.get().distinctUntilChanged()
-                .collect { l -> _modelList.value = l.map { it.toModel() } }
+            repository.get().distinctUntilChanged().collect {  _modelList.value = it }
         }
     }
 

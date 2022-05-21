@@ -21,5 +21,7 @@ interface TodoDao : BaseDao<TodoEntity> {
 
     @Query("SELECT * FROM todos WHERE todo_id = :id")
     suspend fun get(id: UUID): TodoWithSkills?
-    
+
+    @Query("SELECT * FROM todos WHERE uploaded = 0")
+    suspend fun getNotUploaded(): List<TodoEntity?>
 }

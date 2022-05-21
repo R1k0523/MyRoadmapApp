@@ -12,12 +12,9 @@ interface UserDao : BaseDao<UserEntity> {
     @Query("DELETE FROM users_info WHERE user_id = :id")
     suspend fun delete(id: UUID)
 
-    @Query("SELECT * FROM users_info")
-    fun get(): Flow<List<UserEntity>>
+    @Query("SELECT * FROM users_info LIMIT 1")
+    fun get(): Flow<UserEntity>
 
     @Query("DELETE FROM users_info")
     suspend fun delete()
-
-    @Query("SELECT * FROM users_info WHERE user_id = :id")
-    suspend fun get(id: UUID): UserEntity?
 }

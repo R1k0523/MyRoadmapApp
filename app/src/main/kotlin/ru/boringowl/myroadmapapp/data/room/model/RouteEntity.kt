@@ -1,6 +1,8 @@
 package ru.boringowl.myroadmapapp.data.room.model
 
 import androidx.room.*
+import ru.boringowl.myroadmapapp.model.Route
+import ru.boringowl.myroadmapapp.model.Todo
 
 
 @Entity(tableName = "routes")
@@ -16,7 +18,23 @@ class RouteEntity(
     var resumesCount: Int = 0,
     @ColumnInfo(name="vacancies_count")
     var vacanciesCount: Int = 0,
-)
+) {
+    fun toModel(): Route = Route().also {
+        it.routeId = routeId
+        it.routeName = routeName
+        it.routeDescription = routeDescription
+        it.resumesCount = resumesCount
+        it.vacanciesCount = vacanciesCount
+    }
+
+    constructor(model: Route) : this(
+        model.routeId,
+        model.routeName,
+        model.routeDescription,
+        model.resumesCount,
+        model.vacanciesCount,
+    )
+}
 
 data class RouteWithSkills(
     @Embedded val route: RouteEntity,
