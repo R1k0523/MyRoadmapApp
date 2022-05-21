@@ -3,7 +3,6 @@ package ru.boringowl.myroadmapapp.data.room.repos
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.Transformations.map
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.withContext
@@ -28,11 +27,12 @@ class HackathonRepository @Inject constructor(
 
     fun get(): Flow<List<HackathonEntity>> = dao.get().flowOn(Dispatchers.IO).conflate()
 
-    suspend fun fetchAndSave() {
+    suspend fun fetchAndSave(page: Int = 1,
+                             perPage: Int = 20) {
         withContext(Dispatchers.IO) {
             isLoading = true
             try {
-                val hackathons = api.fetch().items
+                val hackathons = api.get(page, perPage).items
                 hackathons.forEach { add(it) }
             } catch (ex: Exception) {
                 ex.printStackTrace()

@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.emptyPreferences
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
@@ -21,18 +22,12 @@ class DataStorageImpl @Inject constructor(@ApplicationContext context: Context) 
 
     private val dataStore = context.dataStore
 
-    //keys
     private object PreferenceKeys{
         val SELECTED_THEME = stringPreferencesKey("selected_theme")
+        val AUTH_TOKEN = stringPreferencesKey("auth_token")
     }
 
-    override fun selectedTheme() = dataStore.data.catch {
-        if (it is IOException){
-            emit(emptyPreferences())
-        } else {
-            throw it
-        }
-    }.map {
+    override fun selectedTheme() = dataStore.data.map {
         it[PreferenceKeys.SELECTED_THEME] ?: "light"
     }
 
@@ -40,6 +35,15 @@ class DataStorageImpl @Inject constructor(@ApplicationContext context: Context) 
     override suspend fun setSelectedTheme(theme: String) {
         dataStore.edit {
             it[PreferenceKeys.SELECTED_THEME] = theme
+        }
+    }
+
+    override fun authToken(): Flow<String> = dataStore.data.map {
+        it[PreferenceKeys.AUTH_TOKEN] ?: ""
+    }
+    override suspend fun setAuthToken(token: String) {
+        dataStore.edit {
+            it[PreferenceKeys.AUTH_TOKEN] = token
         }
     }
 

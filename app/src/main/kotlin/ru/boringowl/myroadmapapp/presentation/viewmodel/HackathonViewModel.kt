@@ -27,7 +27,7 @@ class HackathonViewModel @Inject constructor(private val repository: HackathonRe
         }
     }
 
-    fun fetchAndSave() = viewModelScope.launch { repository.fetchAndSave() }
+    fun fetchAndSave(page: Int = 1, perPage: Int = 20) = viewModelScope.launch { repository.fetchAndSave(page, perPage) }
     fun add(model: Hackathon) = viewModelScope.launch { repository.add(model) }
     fun update(model: Hackathon) = viewModelScope.launch { repository.update(model) }
     fun delete(model: Hackathon) = viewModelScope.launch { repository.delete(model) }

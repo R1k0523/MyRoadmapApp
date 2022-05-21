@@ -1,6 +1,6 @@
 package ru.boringowl.myroadmapapp.model
 
-class RegisterData {
+class ResetPasswordData {
     val username: String = ""
     val password: String = ""
     val email: String = ""

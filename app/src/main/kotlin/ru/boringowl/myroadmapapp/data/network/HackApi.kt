@@ -1,15 +1,19 @@
 package ru.boringowl.myroadmapapp.data.network
 
-import androidx.room.Query
-import retrofit2.Response
-import retrofit2.http.GET
-import retrofit2.http.Header
+import retrofit2.http.*
 import ru.boringowl.myroadmapapp.model.Hackathon
 import ru.boringowl.myroadmapapp.model.ListResponse
+import java.util.*
 
 interface HackApi {
+    @GET(ConstantsServer.hackEndpoint)
+    suspend fun get(
+        @Query("page") page: Int = 1,
+        @Query("perPage") perPage: Int = 20,
+    ) :
+            ListResponse<Hackathon>
 
-    @GET("api/hack")
-    suspend fun fetch(@Header("Authorization") auth: String = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJyb2xlIjoiVXNlciIsInN1YiI6IkJvcmluZ093bCIsImlhdCI6MTY1Mjk2NjA5NSwiZXhwIjoxNjUzMDUyNDk1fQ.US5ZdCf0dw6o4zcDWPdbCp-U4tc_wocH_uS81uKFtZFRMBivqMHNzqcF8gA01ymdxBt_DdJbBk1Q-huZw-zgQw") : ListResponse<Hackathon>
-
+    @GET("${ConstantsServer.hackEndpoint}/{id}")
+    suspend fun get(@Path("id") id: UUID) :
+            Hackathon
 }
