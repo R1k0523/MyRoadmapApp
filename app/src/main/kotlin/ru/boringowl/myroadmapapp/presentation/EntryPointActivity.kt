@@ -17,11 +17,7 @@ class EntryPointActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             MyroadmapappTheme {
-                Scaffold {
-                    it
-                    RootScreen()
-                }
-
+                RootScreen()
             }
         }
     }

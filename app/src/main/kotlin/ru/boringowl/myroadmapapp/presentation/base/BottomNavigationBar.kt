@@ -9,31 +9,22 @@ import ru.boringowl.myroadmapapp.presentation.navigation.NavigationInfo
 @Composable
 fun BottomNavigationBar(navController: NavController) {
     val items = NavigationInfo.bottomBarItems
-    NavigationBar(
-        containerColor = MaterialTheme.colorScheme.surface,
-        contentColor = MaterialTheme.colorScheme.surface,
-    ) {
+    NavigationBar {
         var selectedItem by remember { mutableStateOf(0) }
         items.forEachIndexed { index, item ->
             NavigationBarItem(
                 icon = {
-                    BadgedBox(badge = {
-                        Badge { Text(index.toString()) }
-                    })
-                    {
-                        Icon(
-                            item.icon,
-                            contentDescription = item.route
-                        )
-                    }
+                    Icon(
+                        item.icon,
+                        contentDescription = item.route
+                    )
                 },
-                label = { stringResource(id = item.title) },
+                label = { Text(stringResource(id = item.title)) },
                 selected = selectedItem == index,
                 onClick = {
                     selectedItem = index
                     navController.navigate(item.route)
                 },
-                colors = NavigationBarItemDefaults.colors(indicatorColor = MaterialTheme.colorScheme.surface),
                 alwaysShowLabel = true
             )
         }

@@ -25,7 +25,6 @@ enum class NavigationItem(
     }),
     Todo("todo", R.string.nav_todos, Icons.Rounded.Inventory, {}),
     TodoDetails("todoDetails", R.string.nav_todo, Icons.Rounded.ViewList, {}),
-    Community("community", R.string.community, Icons.Rounded.Groups, {}),
     Skills("skills", R.string.nav_skills, Icons.Rounded.Code, {}),
     Route("route", R.string.nav_routes, Icons.Rounded.CallSplit, {}),
     Login("auth", R.string.nav_login, Icons.Rounded.Login, {
@@ -39,7 +38,7 @@ object NavigationInfo {
     val bottomBarItems = arrayListOf(
         NavigationItem.Todo,
         NavigationItem.Route,
-        NavigationItem.Community,
+        NavigationItem.Hackathons,
         NavigationItem.Profile
     )
 

@@ -55,8 +55,6 @@ fun HackathonsScreen(
         }){
             Text("+")
         } },
-        bottomBar = { BottomAppBar() { Text("BottomAppBar") } }
-
     ) {
         val start = it.calculateLeftPadding(LayoutDirection.Ltr)
         val top = it.calculateTopPadding()
