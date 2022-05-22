@@ -3,10 +3,12 @@ package ru.boringowl.myroadmapapp.data.room.repos
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.map
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.conflate
-import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import ru.boringowl.myroadmapapp.data.network.HackApi
@@ -29,9 +31,9 @@ class HackathonRepository @Inject constructor(
     suspend fun delete(model: Hackathon) = dao.delete(entity(model))
     suspend fun delete() = dao.delete()
 
-    fun get(): Flow<List<Hackathon>> = dao.get()
-        .flowOn(Dispatchers.IO).conflate()
-        .map { f -> f.map { it.toModel() } }
+    fun get(): Flow<PagingData<Hackathon>> = Pager(config = PagingConfig(10)) {
+        dao.get()
+    }.flow.map { it.map { it.toModel() } }
 
     suspend fun fetchAndSave(page: Int = 1,
                              perPage: Int = 20) {

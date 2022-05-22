@@ -1,13 +1,10 @@
-package ru.boringowl.myroadmapapp.presentation.features.hackathons
+package ru.boringowl.myroadmapapp.presentation.features.hackathons.list
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.paging.PagingData
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.distinctUntilChanged
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import ru.boringowl.myroadmapapp.data.room.repos.HackathonRepository
 import ru.boringowl.myroadmapapp.model.Hackathon
 import ru.boringowl.myroadmapapp.presentation.base.launchIO
@@ -18,16 +15,16 @@ class HackathonViewModel @Inject constructor(
     private val repository: HackathonRepository
 ) : ViewModel() {
 
-    private val _modelList = MutableStateFlow<List<Hackathon>>(emptyList())
-    val modelList = _modelList.asStateFlow()
-
+    var modelList: Flow<PagingData<Hackathon>> = flow { PagingData.empty<Hackathon>() }
     init {
         launchIO {
-            repository.get().distinctUntilChanged().collect {  _modelList.value = it }
+            modelList = repository.get()
         }
     }
 
-    fun fetchAndSave(page: Int = 1, perPage: Int = 20) = launchIO { repository.fetchAndSave(page, perPage) }
+    fun fetchAndSave() = launchIO {
+        repository.fetchAndSave()
+    }
     fun add(model: Hackathon) = launchIO { repository.add(model) }
     fun update(model: Hackathon) = launchIO { repository.update(model) }
     fun delete(model: Hackathon) = launchIO { repository.delete(model) }

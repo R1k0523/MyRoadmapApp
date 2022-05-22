@@ -1,6 +1,5 @@
 package ru.boringowl.myroadmapapp.data.network
 
-import android.util.Log
 import retrofit2.HttpException
 
 fun HttpException.errorText(): String {

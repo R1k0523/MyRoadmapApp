@@ -57,6 +57,7 @@ dependencies {
     implementation("androidx.compose.ui:ui:$compose_version")
     implementation("androidx.compose.material3:material3:1.0.0-alpha12")
     implementation("androidx.compose.ui:ui-tooling-preview:$compose_version")
+    implementation("androidx.paging:paging-compose:1.0.0-alpha14")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
     implementation("androidx.activity:activity-compose:1.4.0")
     implementation("androidx.compose.material:material-icons-core:$compose_version")
@@ -81,7 +82,9 @@ dependencies {
     //Room lib
     implementation("androidx.legacy:legacy-support-v4:1.0.0")
     implementation("androidx.room:room-runtime:2.4.2")
+    implementation("androidx.room:room-paging:2.4.2")
     kapt("androidx.room:room-compiler:2.4.2")
+
     implementation("androidx.room:room-ktx:2.4.2")
     //data store
     implementation("androidx.datastore:datastore-preferences:1.0.0")
