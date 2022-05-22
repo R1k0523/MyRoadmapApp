@@ -55,21 +55,20 @@ dependencies {
     //android
     implementation("androidx.core:core-ktx:1.7.0")
     implementation("androidx.compose.ui:ui:$compose_version")
-    implementation("androidx.compose.material3:material3:1.0.0-alpha11")
+    implementation("androidx.compose.material3:material3:1.0.0-alpha12")
     implementation("androidx.compose.ui:ui-tooling-preview:$compose_version")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.4.1")
     implementation("androidx.activity:activity-compose:1.4.0")
     implementation("androidx.compose.material:material-icons-core:$compose_version")
     implementation("androidx.compose.material:material-icons-extended:$compose_version")
     implementation("androidx.navigation:navigation-compose:2.4.2")
-
     // Kotlin Extensions
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.3.2")
 
     // Accompanist
-    implementation("com.google.accompanist:accompanist-placeholder-material:0.24.8-beta")
-
+    implementation("com.google.accompanist:accompanist-placeholder-material:0.24.9-beta")
+    implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.9-beta")
     // Hilt
     implementation("com.google.dagger:hilt-android:2.40.1")
     kapt("com.google.dagger:hilt-android-compiler:2.40.1")
@@ -92,7 +91,7 @@ dependencies {
     //retrofit - networking
     implementation("com.squareup.retrofit2:retrofit:2.9.0")
     implementation("com.squareup.retrofit2:converter-gson:2.9.0")
-    implementation("com.squareup.okhttp3:logging-interceptor:4.9.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
     implementation("androidx.paging:paging-runtime-ktx:3.1.1")
 
 

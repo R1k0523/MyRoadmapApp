@@ -20,13 +20,14 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import ru.boringowl.myroadmapapp.presentation.features.auth.login.LoginViewModel
+import ru.boringowl.myroadmapapp.presentation.features.auth.AccountViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class)
 @Composable
 fun HackathonsScreen(
     navController: NavController,
     viewModel: HackathonViewModel = hiltViewModel(),
+    accViewModel: AccountViewModel = hiltViewModel(),
     ) {
     Scaffold(
         topBar = {
@@ -39,7 +40,10 @@ fun HackathonsScreen(
                         fontWeight = FontWeight.Bold
                     )
                     Button(
-                        onClick = {viewModel.delete()},
+                        onClick = {
+                            viewModel.delete()
+                            accViewModel.logOut()
+                                  },
                         content = { Text("Удалить") },
                     )
                 }

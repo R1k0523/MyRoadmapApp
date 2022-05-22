@@ -8,4 +8,5 @@ interface DataStorage {
 
     fun authToken() : Flow<String>
     suspend fun setAuthToken(token: String)
+    suspend fun deleteToken()
 }

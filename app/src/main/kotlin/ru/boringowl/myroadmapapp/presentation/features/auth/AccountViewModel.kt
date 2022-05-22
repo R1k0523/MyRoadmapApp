@@ -11,12 +11,13 @@ import kotlinx.coroutines.launch
 import ru.boringowl.myroadmapapp.data.datastore.DataStorage
 import ru.boringowl.myroadmapapp.data.room.repos.UserRepository
 import ru.boringowl.myroadmapapp.model.User
+import ru.boringowl.myroadmapapp.presentation.base.launchIO
 import javax.inject.Inject
 
 @HiltViewModel
 class AccountViewModel @Inject constructor(
-    repository: UserRepository,
-    dataStorage: DataStorage
+    val repository: UserRepository,
+    val dataStorage: DataStorage
 ) : ViewModel() {
 
     private val _currentUser = MutableStateFlow<User?>(null)
@@ -31,4 +32,6 @@ class AccountViewModel @Inject constructor(
             dataStorage.authToken().distinctUntilChanged().collect{ _token.value = it }
         }
     }
+
+    fun logOut() = launchIO { repository.logout() }
 }

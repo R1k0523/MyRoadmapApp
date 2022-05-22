@@ -11,6 +11,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.boringowl.myroadmapapp.BuildConfig
 import ru.boringowl.myroadmapapp.data.datastore.DataStorage
 import ru.boringowl.myroadmapapp.data.network.*
+import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
@@ -27,7 +28,12 @@ object NetworkModule {
     fun okhttpClient(dataStorage: DataStorage) : OkHttpClient {
         val interceptor = HttpLoggingInterceptor()
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-        return OkHttpClient.Builder().addInterceptor(interceptor).addInterceptor(AuthInterceptor(dataStorage)).build()
+        return OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .addInterceptor(AuthInterceptor(dataStorage))
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .build()
     }
 
     @Singleton @Provides

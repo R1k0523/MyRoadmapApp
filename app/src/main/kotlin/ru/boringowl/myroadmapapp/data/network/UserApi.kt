@@ -18,7 +18,6 @@ interface UserApi {
             UserTokenData
 
     @POST("${ConstantsServer.authEndpoint}/resetPassword")
-    suspend fun resetPassword(@Body resetData: RestorePasswordData) :
-            String
+    suspend fun resetPassword(@Body resetData: RestorePasswordData)
 
 }

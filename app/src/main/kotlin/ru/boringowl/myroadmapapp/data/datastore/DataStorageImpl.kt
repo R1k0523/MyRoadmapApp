@@ -44,5 +44,11 @@ class DataStorageImpl @Inject constructor(@ApplicationContext context: Context) 
         }
     }
 
+    override suspend fun deleteToken() {
+        dataStore.edit {
+            it[PreferenceKeys.AUTH_TOKEN] = ""
+        }
+    }
+
 
 }

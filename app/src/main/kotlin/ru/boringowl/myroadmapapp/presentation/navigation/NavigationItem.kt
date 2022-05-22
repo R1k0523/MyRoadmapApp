@@ -7,7 +7,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import ru.boringowl.myroadmapapp.R
-import ru.boringowl.myroadmapapp.presentation.features.auth.login.LoginScreen
+import ru.boringowl.myroadmapapp.presentation.features.auth.signin.SignInScreen
+import ru.boringowl.myroadmapapp.presentation.features.auth.signup.SignUpScreen
+import ru.boringowl.myroadmapapp.presentation.features.auth.resetpassword.ResetPasswordScreen
 import ru.boringowl.myroadmapapp.presentation.features.hackathons.HackathonsScreen
 
 enum class NavigationItem(
@@ -27,10 +29,10 @@ enum class NavigationItem(
     Skills("skills", R.string.nav_skills, Icons.Rounded.Code, {}),
     Route("route", R.string.nav_routes, Icons.Rounded.CallSplit, {}),
     Login("auth", R.string.nav_login, Icons.Rounded.Login, {
-        LoginScreen(it)
+        SignInScreen(it)
     }),
-    ForgotPassword("forgot", R.string.nav_forgot_password, Icons.Rounded.Password, {}),
-    Register("register", R.string.nav_register, Icons.Rounded.PersonAdd, {}),
+    ForgotPassword("forgot", R.string.nav_forgot_password, Icons.Rounded.Password, {ResetPasswordScreen(it)}),
+    Register("register", R.string.nav_register, Icons.Rounded.PersonAdd, { SignUpScreen(it) }),
 }
 
 object NavigationInfo {
