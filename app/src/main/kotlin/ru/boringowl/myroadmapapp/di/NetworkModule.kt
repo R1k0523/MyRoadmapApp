@@ -10,7 +10,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.boringowl.myroadmapapp.BuildConfig
 import ru.boringowl.myroadmapapp.data.datastore.DataStorage
-import ru.boringowl.myroadmapapp.data.network.AuthInterceptor
 import ru.boringowl.myroadmapapp.data.network.*
 import javax.inject.Singleton
 

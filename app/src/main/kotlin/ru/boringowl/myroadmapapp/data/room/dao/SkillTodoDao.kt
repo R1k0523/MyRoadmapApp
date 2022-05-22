@@ -5,7 +5,6 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 import ru.boringowl.myroadmapapp.data.room.model.SkillTodoEntity
 import ru.boringowl.myroadmapapp.data.room.model.SkillTodoWithSkill
-import ru.boringowl.myroadmapapp.data.room.model.TodoEntity
 import java.util.*
 
 @Dao

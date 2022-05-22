@@ -1,6 +1,5 @@
 package ru.boringowl.myroadmapapp.model
 
-import java.time.LocalDateTime
 import java.util.*
 
 class Hackathon {

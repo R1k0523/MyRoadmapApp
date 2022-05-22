@@ -1,6 +1,5 @@
-package ru.boringowl.myroadmapapp.presentation.viewmodel
+package ru.boringowl.myroadmapapp.presentation.features.hackathons
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -9,8 +8,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
-import ru.boringowl.myroadmapapp.model.Hackathon
 import ru.boringowl.myroadmapapp.data.room.repos.HackathonRepository
+import ru.boringowl.myroadmapapp.model.Hackathon
 import javax.inject.Inject
 
 @HiltViewModel

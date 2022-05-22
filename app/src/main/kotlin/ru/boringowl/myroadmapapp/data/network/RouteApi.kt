@@ -1,6 +1,7 @@
 package ru.boringowl.myroadmapapp.data.network
 
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.Path
 import ru.boringowl.myroadmapapp.model.ListResponse
 import ru.boringowl.myroadmapapp.model.Route
 import java.util.*

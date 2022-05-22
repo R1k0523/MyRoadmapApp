@@ -1,14 +1,10 @@
-package ru.boringowl.myroadmapapp.presentation.view.components
+package ru.boringowl.myroadmapapp.presentation.base
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.AnnotatedString
 import androidx.navigation.NavController
 import ru.boringowl.myroadmapapp.presentation.navigation.NavigationInfo
-import ru.boringowl.myroadmapapp.presentation.navigation.NavigationItem
-import java.security.AccessController.getContext
 
 @Composable
 fun BottomNavigationBar(navController: NavController) {

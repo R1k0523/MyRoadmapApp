@@ -1,7 +1,10 @@
 package ru.boringowl.myroadmapapp.data.network
 
-import retrofit2.http.*
-import ru.boringowl.myroadmapapp.model.*
+import retrofit2.http.GET
+import retrofit2.http.Path
+import retrofit2.http.Query
+import ru.boringowl.myroadmapapp.model.ListResponse
+import ru.boringowl.myroadmapapp.model.Skill
 import java.util.*
 
 interface SkillApi {

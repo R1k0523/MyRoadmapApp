@@ -1,37 +1,31 @@
-package ru.boringowl.myroadmapapp.presentation.view.hackathons
+package ru.boringowl.myroadmapapp.presentation.features.hackathons
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.ExperimentalTextApi
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.LayoutDirection
-import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
-import ru.boringowl.myroadmapapp.presentation.viewmodel.AuthViewModel
-import ru.boringowl.myroadmapapp.presentation.viewmodel.HackathonViewModel
-import androidx.compose.foundation.lazy.items
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import ru.boringowl.myroadmapapp.model.Hackathon
-import java.util.*
+import ru.boringowl.myroadmapapp.presentation.features.auth.login.LoginViewModel
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class)
 @Composable
 fun HackathonsScreen(
     navController: NavController,
-    authViewModel: AuthViewModel = hiltViewModel(),
     viewModel: HackathonViewModel = hiltViewModel(),
     ) {
     Scaffold(

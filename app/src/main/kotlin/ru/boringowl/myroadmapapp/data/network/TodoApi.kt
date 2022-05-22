@@ -1,8 +1,8 @@
 package ru.boringowl.myroadmapapp.data.network
 
 import retrofit2.http.*
-import ru.boringowl.myroadmapapp.model.Todo
 import ru.boringowl.myroadmapapp.model.ListResponse
+import ru.boringowl.myroadmapapp.model.Todo
 import java.util.*
 
 interface TodoApi {

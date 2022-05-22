@@ -1,6 +1,5 @@
 package ru.boringowl.myroadmapapp.data.network
 
-import android.content.Context
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor

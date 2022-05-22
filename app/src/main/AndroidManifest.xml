@@ -16,7 +16,7 @@
         android:theme="@style/Theme.Myroadmapapp"
         tools:targetApi="31">
         <activity
-            android:name=".presentation.view.EntryPointActivity"
+            android:name=".presentation.EntryPointActivity"
             android:exported="true"
             android:theme="@style/Theme.Myroadmapapp">
             <intent-filter>

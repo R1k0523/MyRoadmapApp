@@ -2,7 +2,6 @@ package ru.boringowl.myroadmapapp.data.room.model
 
 
 import androidx.room.*
-import ru.boringowl.myroadmapapp.model.Hackathon
 import ru.boringowl.myroadmapapp.model.Todo
 import java.util.*
 

@@ -7,8 +7,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import ru.boringowl.myroadmapapp.R
-import ru.boringowl.myroadmapapp.presentation.view.auth.LoginScreen
-import ru.boringowl.myroadmapapp.presentation.view.hackathons.HackathonsScreen
+import ru.boringowl.myroadmapapp.presentation.features.auth.login.LoginScreen
+import ru.boringowl.myroadmapapp.presentation.features.hackathons.HackathonsScreen
 
 enum class NavigationItem(
     var route: String,

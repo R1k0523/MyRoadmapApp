@@ -3,8 +3,6 @@ package ru.boringowl.myroadmapapp.data.room.model
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import ru.boringowl.myroadmapapp.model.Route
-import ru.boringowl.myroadmapapp.model.Skill
 import ru.boringowl.myroadmapapp.model.User
 import ru.boringowl.myroadmapapp.model.UserRole
 import java.util.*

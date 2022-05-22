@@ -1,8 +1,8 @@
 package ru.boringowl.myroadmapapp.data.network
 
 import retrofit2.http.*
-import ru.boringowl.myroadmapapp.model.SkillTodo
 import ru.boringowl.myroadmapapp.model.ListResponse
+import ru.boringowl.myroadmapapp.model.SkillTodo
 import java.util.*
 
 interface SkillTodoApi {

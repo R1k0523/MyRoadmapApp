@@ -4,15 +4,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.conflate
+import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.flow.map
 import ru.boringowl.myroadmapapp.data.datastore.DataStorage
 import ru.boringowl.myroadmapapp.data.network.UserApi
-import ru.boringowl.myroadmapapp.model.User
 import ru.boringowl.myroadmapapp.data.room.dao.UserDao
 import ru.boringowl.myroadmapapp.data.room.model.UserEntity
 import ru.boringowl.myroadmapapp.model.LoginData
 import ru.boringowl.myroadmapapp.model.RegisterData
-import java.util.*
+import ru.boringowl.myroadmapapp.model.User
 import javax.inject.Inject
 
 
@@ -35,7 +37,7 @@ class UserRepository @Inject constructor(
         dao.insert(entity(user))
     }
 
-    suspend fun login(data: LoginData) = dispUploader.load {
+    suspend fun login(data: LoginData, onError: () -> Unit = {}) = dispUploader.load {
         val token = api.auth(data)
         dataStorage.setAuthToken(token.accessToken)
         val user = api.me()
@@ -45,9 +47,9 @@ class UserRepository @Inject constructor(
 
     suspend fun delete() = dao.delete()
 
-    fun get(): Flow<User> = dao.get()
+    fun get(): Flow<User?> = dao.get()
         .flowOn(Dispatchers.IO).conflate()
-        .map { u -> u.toModel() }
+        .map { u -> u?.toModel() }
 
     suspend fun fetchMe() = dispUploader.load {
         val user = api.me()

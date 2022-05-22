@@ -2,7 +2,6 @@ package ru.boringowl.myroadmapapp.data.room.model
 
 import androidx.room.*
 import ru.boringowl.myroadmapapp.model.Route
-import ru.boringowl.myroadmapapp.model.Todo
 
 
 @Entity(tableName = "routes")

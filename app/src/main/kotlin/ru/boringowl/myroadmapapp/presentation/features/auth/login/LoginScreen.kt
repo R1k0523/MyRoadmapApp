@@ -1,4 +1,4 @@
-package ru.boringowl.myroadmapapp.presentation.view.auth
+package ru.boringowl.myroadmapapp.presentation.features.auth.login
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.ClickableText
@@ -14,40 +14,34 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.LayoutDirection
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.boringowl.myroadmapapp.R
-import ru.boringowl.myroadmapapp.presentation.view.components.PasswordTextField
-import ru.boringowl.myroadmapapp.presentation.viewmodel.AuthViewModel
+import ru.boringowl.myroadmapapp.presentation.base.PasswordTextField
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class)
 @Composable
-fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltViewModel()) {
+fun LoginScreen(navController: NavController, viewModel: LoginViewModel = hiltViewModel()) {
     Scaffold(
         topBar = {
             LargeTopAppBar(title = {
-                Column {
-                    Text(
-                        text = "MyRoadmap",
-                        style = MaterialTheme.typography.headlineLarge,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
+                Text(
+                    text = "MyRoadmap",
+                    style = MaterialTheme.typography.headlineLarge,
+                    fontWeight = FontWeight.Bold
+                )
             })
         }
 
-    ) {
-        val start = it.calculateLeftPadding(LayoutDirection.Ltr)
-        val top = it.calculateTopPadding()
-        val right = it.calculateRightPadding(LayoutDirection.Ltr)
-        val bottom = it.calculateBottomPadding()
+    ) { padding ->
         Column(
-            modifier = Modifier.padding(start, top, right, bottom)
+            modifier = Modifier.padding(padding)
         ) {
             Column(
-                Modifier.fillMaxWidth().fillMaxHeight(0.8f),
+                Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.8f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -87,12 +81,14 @@ fun LoginScreen(navController: NavController, viewModel: AuthViewModel = hiltVie
                 Spacer(modifier = Modifier.height(16.dp))
                 Button(
                     modifier = Modifier.fillMaxWidth(0.8f),
-                    onClick = {},
+                    onClick = { viewModel.login() },
                     content = { Text("Войти") },
                 )
             }
             Column(
-                Modifier.fillMaxWidth().fillMaxHeight(),
+                Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 FilledIconButton(modifier = Modifier.size(48.dp),

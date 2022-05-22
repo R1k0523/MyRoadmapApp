@@ -4,7 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ru.boringowl.myroadmapapp.model.Hackathon
-import java.time.LocalDateTime
 import java.util.*
 
 @Entity(tableName = "hackathons")
