@@ -9,6 +9,7 @@ import dagger.hilt.components.SingletonComponent
 import ru.boringowl.myroadmapapp.data.datastore.DataStorage
 import ru.boringowl.myroadmapapp.data.datastore.DataStorageImpl
 import ru.boringowl.myroadmapapp.data.network.HackApi
+import ru.boringowl.myroadmapapp.data.room.AppDatabase
 import ru.boringowl.myroadmapapp.data.room.dao.HackathonDao
 import ru.boringowl.myroadmapapp.data.room.repos.HackathonRepository
 import javax.inject.Singleton
@@ -18,7 +19,7 @@ import javax.inject.Singleton
 object RepositoryModule {
 
     @Singleton @Provides
-    fun provideHackathonRepository(dao: HackathonDao, api: HackApi) = HackathonRepository(dao, api)
+    fun provideHackathonRepository(dao: HackathonDao, api: HackApi, db: AppDatabase) = HackathonRepository(dao, api, db)
 
     @Singleton @Provides
     fun provideDataStore(@ApplicationContext context: Context): DataStorage = DataStorageImpl(context)

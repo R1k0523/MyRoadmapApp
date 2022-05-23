@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
@@ -25,10 +26,11 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
-import androidx.paging.compose.itemsIndexed
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import ru.boringowl.myroadmapapp.model.Hackathon
+import androidx.paging.compose.items
+import ru.boringowl.myroadmapapp.R
 import ru.boringowl.myroadmapapp.presentation.base.rememberForeverLazyListState
 
 
@@ -44,7 +46,7 @@ fun HackathonsScreen(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
                         modifier = Modifier.fillMaxWidth(0.5f),
-                        text = "Хакатоны",
+                        text = stringResource(R.string.nav_hackathon),
                         style = MaterialTheme.typography.headlineSmall,
                         fontWeight = FontWeight.Bold
                     )
@@ -52,7 +54,7 @@ fun HackathonsScreen(
                         onClick = {
                             viewModel.delete()
                       },
-                        content = { Text("Удалить") },
+                        content = { Text(stringResource(R.string.delete)) },
                     )
                 }
             })
@@ -75,12 +77,16 @@ fun HackathonsScreen(
                 Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center,
-                state = rememberForeverLazyListState("Hackathons")
+                state = rememberForeverLazyListState(stringResource(R.string.nav_hackathon))
             ) {
-                itemsIndexed(hacks) { i, h ->
-                    HackathonView(h)
+                items(
+                    items = hacks,
+                    key = { h ->
+                        h.hackId!!
+                    }
+                ) { h ->
+                    h?.let { it1 -> HackathonView(it1) }
                 }
-
                 if (hacks.loadState.append == LoadState.Loading) {
                     item {
                         CircularProgressIndicator(
@@ -97,7 +103,7 @@ fun HackathonsScreen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HackathonView(h: Hackathon?) {
+fun HackathonView(h: Hackathon) {
     val opened = remember { mutableStateOf(false)}
     val context = LocalContext.current
     Card(
@@ -106,18 +112,22 @@ fun HackathonView(h: Hackathon?) {
             .padding(16.dp)
     ) {
         Column {
-            Box(modifier = Modifier
-                .background(Color.DarkGray)
-                .fillMaxSize()) {
-                AsyncImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(h!!.imageUrl)
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = "hack_photo",
-                    contentScale = ContentScale.FillWidth,
-                    modifier = Modifier.fillMaxWidth()
-                )
+            h.imageUrl?.let {
+                Box(
+                    modifier = Modifier
+                        .background(Color.DarkGray)
+                        .fillMaxSize()
+                ) {
+                    AsyncImage(
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(it)
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = "hack_photo",
+                        contentScale = ContentScale.FillWidth,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
             }
             Column(
                 Modifier
@@ -125,7 +135,7 @@ fun HackathonView(h: Hackathon?) {
                     .padding(16.dp, 8.dp)
             ) {
                 Text(
-                    h!!.hackTitle,
+                    h.hackTitle,
                     style = MaterialTheme.typography.headlineSmall,
                     fontWeight = FontWeight.Normal
                 )
@@ -136,20 +146,20 @@ fun HackathonView(h: Hackathon?) {
                 )
                 AnimatedVisibility(visible = opened.value) {
                     Column(Modifier.fillMaxWidth()) {
-                        TextWithHeader("Дата проведения", h.date)
-                        TextWithHeader("Технологический фокус", h.focus)
-                        TextWithHeader("Призовой фонд", h.prize)
-                        TextWithHeader("Организатор", h.organization)
-                        TextWithHeader("Целевая аудитория", h.routes)
+                        TextWithHeader(stringResource(R.string.hack_date), h.date)
+                        TextWithHeader(stringResource(R.string.hack_focus), h.focus)
+                        TextWithHeader(stringResource(R.string.hack_money), h.prize)
+                        TextWithHeader(stringResource(R.string.hack_org), h.organization)
+                        TextWithHeader(stringResource(R.string.hack_aud), h.routes)
                     }
                 }
                 Row {
                     Button(onClick = { opened.value = !opened.value }, modifier = Modifier
                         .weight(1f)
-                        .padding(top = 8.dp, end = 4.dp)) { Text(if (opened.value) "Свернуть" else "Подробнее") }
+                        .padding(top = 8.dp, end = 4.dp)) { Text(stringResource(if (opened.value) R.string.collapse else R.string.more)) }
                     Button(onClick = {openLink(h.source, context)}, modifier = Modifier
                         .weight(1f)
-                        .padding(top = 8.dp, start = 4.dp)) { Text("Перейти") }
+                        .padding(top = 8.dp, start = 4.dp)) { Text(stringResource(R.string.go_to)) }
                 }
             }
         }

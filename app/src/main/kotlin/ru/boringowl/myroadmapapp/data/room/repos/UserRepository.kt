@@ -39,16 +39,11 @@ class UserRepository @Inject constructor(
         onError: (message: String) -> Unit = {}
     ) = dispUploader.load {
         try {
-            Log.e("REG", "TOKEN")
             val token = api.register(data)
-            Log.e("REG", token.accessToken)
             dataStorage.setAuthToken(token.accessToken)
-            Log.e("REG", "TOKEN SET")
             fetchMe()
-            Log.e("REG", "FETCHED")
             onSuccess()
         } catch (e: HttpException) {
-            Log.e("REG", e.toString())
             onError(e.errorText())
         }
     }

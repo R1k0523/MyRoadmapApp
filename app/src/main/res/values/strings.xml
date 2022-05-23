@@ -29,4 +29,14 @@
     <string name="reset_password_info">Пароль будет сброшен и вам придет письмо с новым паролем на почту</string>
     <string name="reset_password_success">Пароль успешно сброшен. Вам пришло письмо с новым паролем на указанную почту.</string>
 
+    <string name="hack_date">Дата проведения</string>
+    <string name="hack_focus">Технологический фокус</string>
+    <string name="hack_money">Призовой фонд</string>
+    <string name="hack_org">Организатор</string>
+    <string name="hack_aud">Целевая аудитория</string>
+
+    <string name="collapse">Свернуть</string>
+    <string name="more">Подробнее</string>
+    <string name="go_to">Перейти</string>
+    <string name="delete">Удалить</string>
 </resources>

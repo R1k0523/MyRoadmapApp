@@ -16,6 +16,8 @@ import ru.boringowl.myroadmapapp.data.room.model.*
         SkillTodoEntity::class,
         TodoEntity::class,
         UserEntity::class,
+        SkillRemoteKeys::class,
+        HackathonRemoteKeys::class,
     ], version = 1, exportSchema = false
 )
 @TypeConverters(RoomConverters::class)
@@ -27,6 +29,8 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun skillTodoDao(): SkillTodoDao
     abstract fun todoDao(): TodoDao
     abstract fun userDao(): UserDao
+    abstract fun skillRemoteDao(): SkillRemoteDao
+    abstract fun hackRemoteDao(): HackathonRemoteDao
     companion object {
         const val DATABASE_NAME = "roadmap_db"
     }

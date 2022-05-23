@@ -40,4 +40,10 @@ object RoomModule {
 
     @Singleton @Provides
     fun provideUserDao(db: AppDatabase) = db.userDao()
+
+    @Singleton @Provides
+    fun provideSkillRemoteDao(db: AppDatabase) = db.skillRemoteDao()
+
+    @Singleton @Provides
+    fun provideHackathonRemoteDao(db: AppDatabase) = db.hackRemoteDao()
 }

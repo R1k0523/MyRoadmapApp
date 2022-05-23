@@ -5,6 +5,7 @@ import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.boringowl.myroadmapapp.model.Hackathon
 import ru.boringowl.myroadmapapp.model.ListResponse
+import ru.boringowl.myroadmapapp.model.PagedResponse
 import java.util.*
 
 interface HackApi {
@@ -13,7 +14,7 @@ interface HackApi {
         @Query("page") page: Int = 1,
         @Query("perPage") perPage: Int = 20,
     ) :
-            ListResponse<Hackathon>
+            PagedResponse<Hackathon>
 
     @GET("${ConstantsServer.hackEndpoint}/{id}")
     suspend fun get(@Path("id") id: UUID) :
