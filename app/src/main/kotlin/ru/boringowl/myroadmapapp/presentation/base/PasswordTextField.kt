@@ -43,11 +43,7 @@ fun PasswordTextField(
         passwordVisible -> VisualTransformation.None
         else -> PasswordVisualTransformation()
     },
-    colors = TextFieldDefaults.outlinedTextFieldColors(
-        unfocusedBorderColor = if (isInvalid)
-            MaterialTheme.colorScheme.error else
-            MaterialTheme.colorScheme.onBackground
-    ),
+    isError = isInvalid,
     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
     trailingIcon = {
         IconButton(onClick = { onPasswordVisibleChange(!passwordVisible) }) {

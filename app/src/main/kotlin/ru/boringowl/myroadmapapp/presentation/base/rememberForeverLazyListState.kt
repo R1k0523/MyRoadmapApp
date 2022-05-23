@@ -12,7 +12,9 @@ private data class KeyParams(
     val index: Int,
     val scrollOffset: Int
 )
-
+fun resetScroll(key: String) {
+    SaveMap.remove(key)
+}
 @Composable
 fun rememberForeverLazyListState(
     key: String,

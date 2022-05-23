@@ -50,11 +50,7 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
                     label = { Text(stringResource(R.string.username)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        unfocusedBorderColor = if (viewModel.isError())
-                            MaterialTheme.colorScheme.error else
-                            MaterialTheme.colorScheme.onBackground
-                    ),
+                    isError = viewModel.isError()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
@@ -63,11 +59,7 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
                     label = { Text(stringResource(R.string.email)) },
                     singleLine = true,
                     modifier = Modifier.fillMaxWidth(),
-                    colors = TextFieldDefaults.outlinedTextFieldColors(
-                        unfocusedBorderColor = if (viewModel.isError())
-                            MaterialTheme.colorScheme.error else
-                            MaterialTheme.colorScheme.onBackground
-                    ),
+                    isError = viewModel.isError()
                 )
                 Spacer(modifier = Modifier.height(8.dp))
 

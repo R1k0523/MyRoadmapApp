@@ -16,4 +16,17 @@ class Hackathon {
     var terms: String? = ""
     var organization: String? = ""
     var imageUrl: String? = ""
+
+    fun fullText(): String =
+        listOf(hackTitle,
+                hackDescription,
+                date,
+                registration,
+                focus,
+                prize,
+                routes,
+                terms,
+                organization,
+                imageUrl,
+        ).joinToString(" ").lowercase()
 }

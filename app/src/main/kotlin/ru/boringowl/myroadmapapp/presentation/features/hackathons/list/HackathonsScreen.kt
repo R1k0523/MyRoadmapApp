@@ -7,6 +7,9 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +35,7 @@ import ru.boringowl.myroadmapapp.model.Hackathon
 import androidx.paging.compose.items
 import ru.boringowl.myroadmapapp.R
 import ru.boringowl.myroadmapapp.presentation.base.rememberForeverLazyListState
+import ru.boringowl.myroadmapapp.presentation.base.resetScroll
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class)
@@ -39,30 +43,59 @@ import ru.boringowl.myroadmapapp.presentation.base.rememberForeverLazyListState
 fun HackathonsScreen(
     navController: NavController,
     viewModel: HackathonViewModel = hiltViewModel(),
-    ) {
+) {
     Scaffold(
         topBar = {
             SmallTopAppBar(title = {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        modifier = Modifier.fillMaxWidth(0.5f),
-                        text = stringResource(R.string.nav_hackathon),
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Bold
-                    )
-                    Button(
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.padding(12.dp, 8.dp)
+                ) {
+                    if (viewModel.isSearchOpened)
+                        OutlinedTextField(
+                            value = viewModel.searchText,
+                            onValueChange = { viewModel.searchText = it },
+                            singleLine = true,
+                            modifier = Modifier.weight(1f).height(50.dp),
+                            textStyle = MaterialTheme.typography.bodyMedium,
+                        )
+                    else {
+                        Text(
+                            modifier = Modifier.weight(1f),
+                            text = stringResource(R.string.nav_hackathon),
+                            style = MaterialTheme.typography.headlineSmall,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
+                    val tag = stringResource(R.string.nav_hackathon)
+                    IconButton(modifier = Modifier.size(28.dp),
                         onClick = {
-                            viewModel.delete()
-                      },
-                        content = { Text(stringResource(R.string.delete)) },
-                    )
+                            viewModel.isSearchOpened = !viewModel.isSearchOpened
+                            viewModel.searchText = ""
+                            resetScroll(tag)
+                        }) {
+                        if (viewModel.isSearchOpened)
+                            Icon(
+                                Icons.Rounded.Close,
+                                "Закрыть",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                        else
+                            Icon(
+                                Icons.Rounded.Search,
+                                "Найти",
+                                tint = MaterialTheme.colorScheme.primary
+                            )
+                    }
                 }
             })
         },
         floatingActionButtonPosition = FabPosition.End,
         floatingActionButton = {
             FloatingActionButton(onClick = { viewModel.fetchAndSave() }) {
-                Text("+") }
+                Text("+")
+            }
         },
     ) {
         val start = it.calculateLeftPadding(LayoutDirection.Ltr)
@@ -85,7 +118,8 @@ fun HackathonsScreen(
                         h.hackId!!
                     }
                 ) { h ->
-                    h?.let { it1 -> HackathonView(it1) }
+                    if (viewModel.isFiltered(h))
+                        HackathonView(h!!)
                 }
                 if (hacks.loadState.append == LoadState.Loading) {
                     item {
@@ -104,7 +138,7 @@ fun HackathonsScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HackathonView(h: Hackathon) {
-    val opened = remember { mutableStateOf(false)}
+    val opened = remember { mutableStateOf(false) }
     val context = LocalContext.current
     Card(
         Modifier
@@ -154,20 +188,25 @@ fun HackathonView(h: Hackathon) {
                     }
                 }
                 Row {
-                    Button(onClick = { opened.value = !opened.value }, modifier = Modifier
-                        .weight(1f)
-                        .padding(top = 8.dp, end = 4.dp)) { Text(stringResource(if (opened.value) R.string.collapse else R.string.more)) }
-                    Button(onClick = {openLink(h.source, context)}, modifier = Modifier
-                        .weight(1f)
-                        .padding(top = 8.dp, start = 4.dp)) { Text(stringResource(R.string.go_to)) }
+                    Button(
+                        onClick = { opened.value = !opened.value }, modifier = Modifier
+                            .weight(1f)
+                            .padding(top = 8.dp, end = 4.dp)
+                    ) { Text(stringResource(if (opened.value) R.string.collapse else R.string.more)) }
+                    Button(
+                        onClick = { openLink(h.source, context) }, modifier = Modifier
+                            .weight(1f)
+                            .padding(top = 8.dp, start = 4.dp)
+                    ) { Text(stringResource(R.string.go_to)) }
                 }
             }
         }
     }
 }
+
 @Composable
 fun TextWithHeader(header: String, text: String?) {
-    if(!text.isNullOrEmpty()) {
+    if (!text.isNullOrEmpty()) {
         Column(Modifier.padding(0.dp, 6.dp)) {
             Text(
                 header,
