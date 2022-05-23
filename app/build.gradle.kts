@@ -72,6 +72,7 @@ dependencies {
     implementation("com.google.accompanist:accompanist-systemuicontroller:0.24.9-beta")
     // Hilt
     implementation("com.google.dagger:hilt-android:2.40.1")
+    implementation("com.google.android.material:material:1.6.0")
     kapt("com.google.dagger:hilt-android-compiler:2.40.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
 

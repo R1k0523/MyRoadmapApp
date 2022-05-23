@@ -24,7 +24,7 @@ fun RootScreen(
 ) {
     val startDestination = when (accountViewModel.currentUser.collectAsState().value) {
         null -> NavigationItem.Login
-        else -> NavigationItem.Hackathons
+        else -> NavigationItem.Todo
     }
 
     Scaffold(

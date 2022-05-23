@@ -1,13 +1,17 @@
-package ru.boringowl.myroadmapapp.presentation.features.hackathons.list
+package ru.boringowl.myroadmapapp.presentation.features.hackathons
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.paging.PagingData
+import androidx.paging.filter
+import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.filter
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 import ru.boringowl.myroadmapapp.data.room.repos.HackathonRepository
 import ru.boringowl.myroadmapapp.model.Hackathon
 import ru.boringowl.myroadmapapp.presentation.base.launchIO
@@ -30,7 +34,7 @@ class HackathonViewModel @Inject constructor(
     fun fetchAndSave() = launchIO {
         repository.fetchAndSave()
     }
-    fun isFiltered(hackathon: Hackathon?) = hackathon != null && hackathon.fullText().contains(searchText)
+    fun isFiltered(model: Hackathon?) = model != null && model.fullText().contains(searchText)
     fun add(model: Hackathon) = launchIO { repository.add(model) }
     fun update(model: Hackathon) = launchIO { repository.update(model) }
     fun delete(model: Hackathon) = launchIO { repository.delete(model) }

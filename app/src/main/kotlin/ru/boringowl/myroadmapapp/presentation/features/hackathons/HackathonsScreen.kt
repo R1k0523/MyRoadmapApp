@@ -1,4 +1,4 @@
-package ru.boringowl.myroadmapapp.presentation.features.hackathons.list
+package ru.boringowl.myroadmapapp.presentation.features.hackathons
 
 import android.content.Context
 import android.content.Intent
@@ -34,6 +34,7 @@ import coil.request.ImageRequest
 import ru.boringowl.myroadmapapp.model.Hackathon
 import androidx.paging.compose.items
 import ru.boringowl.myroadmapapp.R
+import ru.boringowl.myroadmapapp.presentation.base.TextWithHeader
 import ru.boringowl.myroadmapapp.presentation.base.rememberForeverLazyListState
 import ru.boringowl.myroadmapapp.presentation.base.resetScroll
 
@@ -91,20 +92,10 @@ fun HackathonsScreen(
                 }
             })
         },
-        floatingActionButtonPosition = FabPosition.End,
-        floatingActionButton = {
-            FloatingActionButton(onClick = { viewModel.fetchAndSave() }) {
-                Text("+")
-            }
-        },
-    ) {
-        val start = it.calculateLeftPadding(LayoutDirection.Ltr)
-        val top = it.calculateTopPadding()
-        val right = it.calculateRightPadding(LayoutDirection.Ltr)
-        val bottom = it.calculateBottomPadding()
+    ) { p ->
         val hacks = viewModel.modelList.collectAsLazyPagingItems()
         Column(
-            modifier = Modifier.padding(start, top, right, bottom)
+            modifier = Modifier.padding(p)
         ) {
             LazyColumn(
                 Modifier.fillMaxSize(),
@@ -200,25 +191,6 @@ fun HackathonView(h: Hackathon) {
                     ) { Text(stringResource(R.string.go_to)) }
                 }
             }
-        }
-    }
-}
-
-@Composable
-fun TextWithHeader(header: String, text: String?) {
-    if (!text.isNullOrEmpty()) {
-        Column(Modifier.padding(0.dp, 6.dp)) {
-            Text(
-                header,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Normal
-            )
-            Spacer(Modifier.height(4.dp))
-            Text(
-                text,
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Light
-            )
         }
     }
 }

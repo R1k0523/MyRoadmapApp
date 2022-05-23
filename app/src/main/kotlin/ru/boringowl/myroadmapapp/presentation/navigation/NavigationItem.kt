@@ -10,7 +10,8 @@ import ru.boringowl.myroadmapapp.R
 import ru.boringowl.myroadmapapp.presentation.features.auth.resetpassword.ResetPasswordScreen
 import ru.boringowl.myroadmapapp.presentation.features.auth.signin.SignInScreen
 import ru.boringowl.myroadmapapp.presentation.features.auth.signup.SignUpScreen
-import ru.boringowl.myroadmapapp.presentation.features.hackathons.list.HackathonsScreen
+import ru.boringowl.myroadmapapp.presentation.features.hackathons.HackathonsScreen
+import ru.boringowl.myroadmapapp.presentation.features.routes.RoutesScreen
 
 enum class NavigationItem(
     var route: String,
@@ -26,7 +27,9 @@ enum class NavigationItem(
     Todo("todo", R.string.nav_todos, Icons.Rounded.Inventory, {}),
     TodoDetails("todoDetails", R.string.nav_todo, Icons.Rounded.ViewList, {}),
     Skills("skills", R.string.nav_skills, Icons.Rounded.Code, {}),
-    Route("route", R.string.nav_routes, Icons.Rounded.CallSplit, {}),
+    Route("route", R.string.nav_routes, Icons.Rounded.CallSplit, {
+        RoutesScreen(it)
+    }),
     Login("auth", R.string.nav_login, Icons.Rounded.Login, {
         SignInScreen(it)
     }),
