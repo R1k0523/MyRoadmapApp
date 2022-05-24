@@ -1,7 +1,7 @@
-package ru.boringowl.myroadmapapp.presentation.features.routes
+package ru.boringowl.myroadmapapp.presentation.features.todos.list
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,23 +19,20 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import ru.boringowl.myroadmapapp.R
-import ru.boringowl.myroadmapapp.model.Route
-import ru.boringowl.myroadmapapp.presentation.base.LoadingButton
+import ru.boringowl.myroadmapapp.model.Skill
+import ru.boringowl.myroadmapapp.model.Todo
 import ru.boringowl.myroadmapapp.presentation.base.rememberForeverLazyListState
 import ru.boringowl.myroadmapapp.presentation.base.resetScroll
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class)
 @Composable
-fun RoutesScreen(
+fun TodosScreen(
     navController: NavController,
-    viewModel: RoutesViewModel = hiltViewModel(),
+    viewModel: TodosViewModel = hiltViewModel(),
 ) {
-    if (viewModel.isDialogOpened)
-        AlertDialog(viewModel)
     Scaffold(
         topBar = {
             SmallTopAppBar(title = {
@@ -55,13 +53,13 @@ fun RoutesScreen(
                     else {
                         Text(
                             modifier = Modifier.weight(1f),
-                            text = stringResource(R.string.nav_routes),
+                            text = stringResource(R.string.nav_todos),
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    val tag = stringResource(R.string.nav_routes)
+                    val tag = stringResource(R.string.nav_todos)
                     IconButton(modifier = Modifier.size(28.dp),
                         onClick = {
                             viewModel.isSearchOpened = !viewModel.isSearchOpened
@@ -85,8 +83,12 @@ fun RoutesScreen(
             })
         },
         floatingActionButtonPosition = FabPosition.End,
+        floatingActionButton = {
+            FloatingActionButton(onClick = { viewModel.delete() }) {
+            }
+        }
     ) { p ->
-        val routes = viewModel.modelList.collectAsState(listOf()).value
+        val todos = viewModel.modelList.collectAsState(listOf()).value
         Column(
             modifier = Modifier
                 .padding(p)
@@ -109,123 +111,53 @@ fun RoutesScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 state = rememberForeverLazyListState(stringResource(R.string.nav_routes))
             ) {
-                items(routes.sortedBy { it.index() }) { r ->
-                    AnimatedVisibility(viewModel.isFiltered(r)) {
-                        RouteView(navController, viewModel, r)
+                items(todos.sortedBy { it.header }) { t ->
+                    AnimatedVisibility(viewModel.isFiltered(t)) {
+                        TodoView(t)
                     }
                 }
             }
         }
     }
+    LaunchedEffect(true) {
+        viewModel.fetchTodos()
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RouteView(navController: NavController, viewModel: RoutesViewModel, r: Route, ) {
-    val isTrendingIcon = if (r.index() < 3)
-        Icons.Rounded.TrendingUp
-    else if (r.index() in 3..6)
-        Icons.Rounded.TrendingFlat
-    else
-        Icons.Rounded.TrendingDown
+fun TodoView(t: Todo) {
     Card(
         Modifier
             .fillMaxWidth()
-            .padding(16.dp)
-            .clickable { navController.navigate("skills/${r.routeId}") }
+            .padding(16.dp, 8.dp)
     ) {
-        Column {
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp, 8.dp)
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        r.routeName,
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Normal,
-                        modifier = Modifier.weight(0.8f)
-                    )
-                    Icon(
-                        isTrendingIcon,
-                        "Состояние",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(30.dp)
-                    )
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+        ) {
+            Row {
+                var progress = 0
+                var all = 0
+                t.skills?.let { l ->
+                    progress =  l.sumOf { it.progress }
+                    all =  l.size * 5
                 }
                 Text(
-                    "Вакансии: ${r.vacanciesCount}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold
+                    t.header,
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Normal
                 )
+                Spacer(Modifier.weight(1f))
                 Text(
-                    "Резюме: ${r.resumesCount}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold
+                    "($progress/$all)",
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Normal,
                 )
-                Text(
-                    r.routeDescription,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Light
-                )
-                Spacer(Modifier.height(16.dp))
-                Button(onClick = {
-                    viewModel.pickedRoute = r.routeId!!
-                    viewModel.routeName = r.routeName
-                    viewModel.isDialogOpened  = true
-                }) {
-                    Text("Создать план")
-                }
             }
         }
     }
 }
 
-@Composable
-fun AlertDialog(viewModel: RoutesViewModel) {
-    AlertDialog(
-        onDismissRequest = {
-            // Dismiss the dialog when the user clicks outside the dialog or on the back
-            // button. If you want to disable that functionality, simply use an empty
-            // onCloseRequest.
-            viewModel.isDialogOpened = false
-        },
-        title = {
-            Text(text = "Создание плана")
-        },
-        text = {
-            Row {
-                OutlinedTextField(
-                    value = viewModel.todoName,
-                    onValueChange = { viewModel.todoName = it },
-                    singleLine = true,
-                    modifier = Modifier
-                        .weight(1f)
-                        .height(50.dp),
-                    textStyle = MaterialTheme.typography.bodyMedium,
-                )
-            }
-        },
-        confirmButton = {
-            Button(
-                onClick = {
-                    viewModel.isDialogOpened = false
-                    viewModel.add()
-                }) {
-                Text(stringResource(R.string.save))
-            }
-        },
-        dismissButton = {
-            Button(
-                onClick = {
-                    viewModel.isDialogOpened = false
-                    viewModel.todoName = ""
-                    viewModel.routeName = ""
-                    viewModel.pickedRoute = -1
-                }) {
-                Text(stringResource(R.string.cancel))
-            }
-        }
-    )
-}
+

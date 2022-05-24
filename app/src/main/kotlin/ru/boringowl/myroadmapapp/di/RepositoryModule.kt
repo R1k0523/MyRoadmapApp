@@ -25,7 +25,7 @@ object RepositoryModule {
     @Singleton @Provides
     fun provideRouteRepository(dao: RouteDao, api: RouteApi) = RouteRepository(dao, api)
     @Singleton @Provides
-    fun provideTodoRepository(dao: TodoDao, api: TodoApi) = TodoRepository(dao, api)
+    fun provideTodoRepository(dao: TodoDao, repo: TodoSkillRepository, api: TodoApi) = TodoRepository(dao, repo, api)
     @Singleton @Provides
     fun provideTodoSkillRepository(dao: SkillTodoDao, api: SkillTodoApi) = TodoSkillRepository(dao, api)
     @Singleton @Provides

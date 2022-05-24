@@ -24,6 +24,7 @@ import ru.boringowl.myroadmapapp.presentation.features.hackathons.HackathonsScre
 import ru.boringowl.myroadmapapp.presentation.features.routes.RoutesScreen
 import ru.boringowl.myroadmapapp.presentation.features.profile.ProfileScreen
 import ru.boringowl.myroadmapapp.presentation.features.skills.SkillsScreen
+import ru.boringowl.myroadmapapp.presentation.features.todos.list.TodosScreen
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -54,6 +55,7 @@ fun RootScreen(
                 HackathonsScreen(navController)
             }
             composable(NavigationItem.Todo.route) {
+                TodosScreen(navController)
             }
             composable(NavigationItem.TodoDetails.route) {
             }

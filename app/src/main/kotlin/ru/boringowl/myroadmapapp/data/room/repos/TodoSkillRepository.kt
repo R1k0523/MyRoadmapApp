@@ -26,9 +26,13 @@ class TodoSkillRepository @Inject constructor(
 
     private fun entity(model: SkillTodo) = SkillTodoEntity(model)
 
-    suspend fun add(model: SkillTodo) = dispUploader.load {
-        val uploaded = api.add(model)
-        dao.insert(entity(uploaded))
+    suspend fun add(model: SkillTodo, upload: Boolean = false) = dispUploader.load {
+        if (upload) {
+            val uploaded = api.add(model)
+            dao.insert(entity(uploaded))
+        } else {
+            dao.insert(entity(model))
+        }
     }
 
     suspend fun update(model: SkillTodo) = dispUploader.load(

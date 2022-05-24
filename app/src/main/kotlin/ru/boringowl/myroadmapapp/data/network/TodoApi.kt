@@ -15,7 +15,7 @@ interface TodoApi {
             Todo
 
     @POST("${ConstantsServer.todoEndpoint}/{id}")
-    suspend fun add(@Path("id") id: UUID, @Query("name") name: String) :
+    suspend fun add(@Path("id") id: Int, @Query("name") name: String) :
             Todo
 
     @PUT(ConstantsServer.todoEndpoint)

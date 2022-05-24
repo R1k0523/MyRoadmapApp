@@ -15,9 +15,10 @@ class TodoEntity (
 )  {
     @ColumnInfo(name="uploaded")
     var uploaded: Boolean = true
-    fun toModel(): Todo = Todo().also {
+    fun toModel(todoSkills: List<SkillTodoEntity>?): Todo = Todo().also {
         it.todoId = todoId
         it.header = header
+        it.skills = todoSkills?.map { ts -> ts.toModel() }
     }
 
     constructor(model: Todo) : this(

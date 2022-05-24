@@ -14,7 +14,7 @@ interface TodoDao : BaseDao<TodoEntity> {
     suspend fun delete(id: UUID)
 
     @Query("SELECT * FROM todos")
-    fun get(): Flow<List<TodoEntity>>
+    fun get(): Flow<List<TodoWithSkills>>
 
     @Query("DELETE FROM todos")
     suspend fun delete()
