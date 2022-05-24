@@ -23,7 +23,7 @@ import ru.boringowl.myroadmapapp.presentation.navigation.NavigationItem
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class)
 @Composable
 fun SignInScreen(navController: NavController, viewModel: SignInViewModel = hiltViewModel()) {
-    Scaffold() { padding ->
+    Scaffold { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)

@@ -8,12 +8,11 @@ import androidx.paging.PagingData
 import androidx.paging.filter
 import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.filter
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.*
 import ru.boringowl.myroadmapapp.data.room.repos.HackathonRepository
 import ru.boringowl.myroadmapapp.model.Hackathon
+import ru.boringowl.myroadmapapp.model.Route
 import ru.boringowl.myroadmapapp.presentation.base.launchIO
 import javax.inject.Inject
 
@@ -22,18 +21,21 @@ class HackathonViewModel @Inject constructor(
     private val repository: HackathonRepository
 ) : ViewModel() {
 
-    var modelList: Flow<PagingData<Hackathon>> = flow { PagingData.empty<Hackathon>() }
+    private var _modelList = MutableStateFlow<List<Hackathon>>(emptyList())
+    val modelList = _modelList.asStateFlow()
+
     var isSearchOpened by mutableStateOf(false)
     var searchText by mutableStateOf("")
-    init {
-        launchIO {
-            modelList = repository.get()
-        }
+
+    fun fetch() = launchIO {
+        repository.get().distinctUntilChanged().collect { _modelList.value = it }
+        repository.fetchAndSave()
     }
 
     fun fetchAndSave() = launchIO {
         repository.fetchAndSave()
     }
+    fun filteredIsEmpty() = modelList.value.none { isFiltered(it) }
     fun isFiltered(model: Hackathon?) = model != null && model.fullText().contains(searchText)
     fun add(model: Hackathon) = launchIO { repository.add(model) }
     fun update(model: Hackathon) = launchIO { repository.update(model) }

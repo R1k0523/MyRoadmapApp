@@ -7,13 +7,12 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,18 +21,15 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import ru.boringowl.myroadmapapp.model.Hackathon
-import androidx.paging.compose.items
 import ru.boringowl.myroadmapapp.R
+import ru.boringowl.myroadmapapp.model.Hackathon
 import ru.boringowl.myroadmapapp.presentation.base.TextWithHeader
 import ru.boringowl.myroadmapapp.presentation.base.rememberForeverLazyListState
 import ru.boringowl.myroadmapapp.presentation.base.resetScroll
@@ -57,7 +53,9 @@ fun HackathonsScreen(
                             value = viewModel.searchText,
                             onValueChange = { viewModel.searchText = it },
                             singleLine = true,
-                            modifier = Modifier.weight(1f).height(50.dp),
+                            modifier = Modifier
+                                .weight(1f)
+                                .height(50.dp),
                             textStyle = MaterialTheme.typography.bodyMedium,
                         )
                     else {
@@ -93,36 +91,35 @@ fun HackathonsScreen(
             })
         },
     ) { p ->
-        val hacks = viewModel.modelList.collectAsLazyPagingItems()
+        val hacks = viewModel.modelList.collectAsState().value.filter { viewModel.isFiltered(it) }
         Column(
-            modifier = Modifier.padding(p)
+            modifier = Modifier.padding(p).fillMaxSize(),
+            verticalArrangement = Arrangement.Center
         ) {
+            if (hacks.isEmpty()) {
+                Text(
+                    "Ничего не найдено",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+
+                )
+            }
             LazyColumn(
                 Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center,
                 state = rememberForeverLazyListState(stringResource(R.string.nav_hackathon))
             ) {
-                items(
-                    items = hacks,
-                    key = { h ->
-                        h.hackId!!
-                    }
-                ) { h ->
-                    if (viewModel.isFiltered(h))
-                        HackathonView(h!!)
-                }
-                if (hacks.loadState.append == LoadState.Loading) {
-                    item {
-                        CircularProgressIndicator(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentWidth(Alignment.CenterHorizontally)
-                        )
-                    }
+                items(hacks) { h ->
+                    HackathonView(h)
                 }
             }
         }
+    }
+    LaunchedEffect(true) {
+        viewModel.fetch()
     }
 }
 

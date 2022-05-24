@@ -4,13 +4,11 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.paging.PagingData
-import androidx.paging.filter
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
-import ru.boringowl.myroadmapapp.data.room.repos.HackathonRepository
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
 import ru.boringowl.myroadmapapp.data.room.repos.RouteRepository
-import ru.boringowl.myroadmapapp.model.Hackathon
 import ru.boringowl.myroadmapapp.model.Route
 import ru.boringowl.myroadmapapp.presentation.base.launchIO
 import javax.inject.Inject
@@ -31,6 +29,7 @@ class RoutesViewModel @Inject constructor(
             repository.fetchAndSave()
         }
     }
+    fun filteredIsEmpty() = modelList.value.none { isFiltered(it) }
     fun isFiltered(model: Route?) = model != null && model.routeName.lowercase().contains(searchText)
     fun add(model: Route) = launchIO { repository.add(model) }
     fun update(model: Route) = launchIO { repository.update(model) }

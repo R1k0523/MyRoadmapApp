@@ -1,10 +1,6 @@
 package ru.boringowl.myroadmapapp.presentation.features.routes
 
-import android.content.Context
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -14,24 +10,15 @@ import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.LayoutDirection
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import coil.compose.AsyncImage
-import coil.request.ImageRequest
-import ru.boringowl.myroadmapapp.model.Hackathon
 import ru.boringowl.myroadmapapp.R
 import ru.boringowl.myroadmapapp.model.Route
 import ru.boringowl.myroadmapapp.presentation.base.rememberForeverLazyListState
@@ -95,17 +82,31 @@ fun RoutesScreen(
         },
         floatingActionButtonPosition = FabPosition.End,
     ) { p ->
-        val routes = viewModel.modelList.collectAsState(listOf()).value.filter { viewModel.isFiltered(it) }
+        val routes = viewModel.modelList.collectAsState(listOf()).value
         Column(
-            modifier = Modifier.padding(paddingValues = p)
+            modifier = Modifier.padding(p).fillMaxSize(),
+            verticalArrangement = Arrangement.Center
         ) {
+            if (viewModel.filteredIsEmpty()) {
+                Text(
+                    "Ничего не найдено",
+                    style = MaterialTheme.typography.headlineMedium,
+                    fontWeight = FontWeight.Normal,
+                    color = MaterialTheme.colorScheme.primary,
+                    modifier = Modifier.fillMaxWidth(),
+                    textAlign = TextAlign.Center
+
+                )
+            }
             LazyColumn(
                 Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 state = rememberForeverLazyListState(stringResource(R.string.nav_routes))
             ) {
                 items(routes.sortedBy { it.index() }) { r ->
-                    RouteView(r)
+                    AnimatedVisibility(viewModel.isFiltered(r)) {
+                        RouteView(r)
+                    }
                 }
             }
         }

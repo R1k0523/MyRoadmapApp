@@ -4,6 +4,7 @@ import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
+import kotlinx.coroutines.flow.Flow
 import ru.boringowl.myroadmapapp.data.room.model.HackathonEntity
 import java.util.*
 
@@ -15,7 +16,7 @@ interface HackathonDao : BaseDao<HackathonEntity> {
     suspend fun delete(id: UUID)
 
     @Query("SELECT * FROM hackathons")
-    fun get(): PagingSource<Int, HackathonEntity>
+    fun get(): Flow<List<HackathonEntity>>
 
     @Query("DELETE FROM hackathons")
     suspend fun delete()

@@ -12,7 +12,13 @@ interface HackApi {
     @GET(ConstantsServer.hackEndpoint)
     suspend fun get(
         @Query("page") page: Int = 1,
-        @Query("perPage") perPage: Int = 20,
+        @Query("perPage") perPage: Int = 100,
+    ) :
+            PagedResponse<Hackathon>
+
+    @GET(ConstantsServer.hackEndpoint)
+    suspend fun search(
+        @Query("text") text: Int = 1
     ) :
             PagedResponse<Hackathon>
 
