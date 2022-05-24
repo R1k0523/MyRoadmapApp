@@ -11,13 +11,10 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import ru.boringowl.myroadmapapp.data.network.HackApi
-import ru.boringowl.myroadmapapp.data.network.HackRemoteMediator
 import ru.boringowl.myroadmapapp.data.room.AppDatabase
 import ru.boringowl.myroadmapapp.data.room.dao.HackathonDao
-import ru.boringowl.myroadmapapp.data.room.dao.HackathonRemoteDao
 import ru.boringowl.myroadmapapp.data.room.model.HackathonEntity
 import ru.boringowl.myroadmapapp.model.Hackathon
-import ru.boringowl.myroadmapapp.model.Route
 import javax.inject.Inject
 
 
@@ -40,12 +37,11 @@ class HackathonRepository @Inject constructor(
         .flowOn(Dispatchers.IO).conflate()
         .map { f -> f.map { it.toModel() } }
 
-    suspend fun fetchAndSave(page: Int = 1,
-                             perPage: Int = 20) {
+    suspend fun fetchAndSave() {
         withContext(Dispatchers.IO) {
             isLoading = true
             try {
-                val models = api.get(page, perPage).items
+                val models = api.get().items
                 models.forEach { add(it) }
             } catch (ex: Exception) {
                 ex.printStackTrace()

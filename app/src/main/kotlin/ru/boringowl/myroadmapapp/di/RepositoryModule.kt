@@ -29,7 +29,7 @@ object RepositoryModule {
     @Singleton @Provides
     fun provideTodoSkillRepository(dao: SkillTodoDao, api: SkillTodoApi) = TodoSkillRepository(dao, api)
     @Singleton @Provides
-    fun provideSkillRepository(dao: SkillDao, api: SkillApi) = SkillRepository(dao, api)
+    fun provideSkillRepository(dao: SkillDao, routeDao: RouteDao, api: SkillApi) = SkillRepository(dao, routeDao, api)
     @Singleton @Provides
     fun provideDataStore(@ApplicationContext context: Context): DataStorage = DataStorageImpl(context)
 

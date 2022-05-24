@@ -30,6 +30,7 @@ class AccountViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             repository.get().distinctUntilChanged().collect {  _currentUser.value = it }
             dataStorage.authToken().distinctUntilChanged().collect{ _token.value = it }
+            repository.fetchMe()
         }
     }
 

@@ -41,5 +41,5 @@ data class RouteWithSkills(
         parentColumn = "route_id",
         entityColumn = "skill_id"
     )
-    val cars: List<SkillEntity>
+    val skills: List<SkillEntity>
 )

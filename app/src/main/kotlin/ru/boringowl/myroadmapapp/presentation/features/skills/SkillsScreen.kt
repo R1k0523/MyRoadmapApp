@@ -1,5 +1,6 @@
-package ru.boringowl.myroadmapapp.presentation.features.routes
+package ru.boringowl.myroadmapapp.presentation.features.skills
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -9,6 +10,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,16 +22,17 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.boringowl.myroadmapapp.R
-import ru.boringowl.myroadmapapp.model.Route
+import ru.boringowl.myroadmapapp.model.Skill
 import ru.boringowl.myroadmapapp.presentation.base.rememberForeverLazyListState
 import ru.boringowl.myroadmapapp.presentation.base.resetScroll
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class)
 @Composable
-fun RoutesScreen(
+fun SkillsScreen(
     navController: NavController,
-    viewModel: RoutesViewModel = hiltViewModel(),
+    routeId: Int,
+    viewModel: SkillsViewModel = hiltViewModel(),
 ) {
     Scaffold(
         topBar = {
@@ -51,13 +54,13 @@ fun RoutesScreen(
                     else {
                         Text(
                             modifier = Modifier.weight(1f),
-                            text = stringResource(R.string.nav_routes),
+                            text = stringResource(R.string.nav_skills),
                             style = MaterialTheme.typography.headlineSmall,
                             fontWeight = FontWeight.Bold
                         )
                     }
                     Spacer(modifier = Modifier.width(8.dp))
-                    val tag = stringResource(R.string.nav_routes)
+                    val tag = stringResource(R.string.nav_skills)
                     IconButton(modifier = Modifier.size(28.dp),
                         onClick = {
                             viewModel.isSearchOpened = !viewModel.isSearchOpened
@@ -81,10 +84,14 @@ fun RoutesScreen(
             })
         },
         floatingActionButtonPosition = FabPosition.End,
+        floatingActionButton = { FloatingActionButton(onClick = { viewModel.delete() }) {
+        }}
     ) { p ->
-        val routes = viewModel.modelList.collectAsState(listOf()).value
+        val skills = viewModel.modelList.collectAsState(listOf()).value
         Column(
-            modifier = Modifier.padding(p).fillMaxSize(),
+            modifier = Modifier
+                .padding(p)
+                .fillMaxSize(),
             verticalArrangement = Arrangement.Center
         ) {
             if (viewModel.filteredIsEmpty()) {
@@ -103,68 +110,38 @@ fun RoutesScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 state = rememberForeverLazyListState(stringResource(R.string.nav_routes))
             ) {
-                items(routes.sortedBy { it.index() }) { r ->
-                    AnimatedVisibility(viewModel.isFiltered(r)) {
-                        RouteView(navController, r)
+                items(skills.sortedBy { it.skillName }) { s ->
+                    AnimatedVisibility(viewModel.isFiltered(s)) {
+                        SkillView(s)
                     }
                 }
             }
         }
     }
+    LaunchedEffect(true) {
+        viewModel.fetchSkills(routeId)
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RouteView(navController: NavController, r: Route) {
-    val isTrendingIcon = if (r.index() < 3)
-        Icons.Rounded.TrendingUp
-    else if (r.index() in 3..6)
-        Icons.Rounded.TrendingFlat
-    else
-        Icons.Rounded.TrendingDown
+fun SkillView(s: Skill) {
     Card(
         Modifier
             .fillMaxWidth()
-            .padding(16.dp)
-            .clickable {navController.navigate("skills/${r.routeId}") }
+            .padding(16.dp, 8.dp)
     ) {
-        Column {
-            Column(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp, 8.dp)
-            ) {
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        r.routeName,
-                        style = MaterialTheme.typography.headlineSmall,
-                        fontWeight = FontWeight.Normal,
-                        modifier = Modifier.weight(0.8f)
-                    )
-                    Icon(
-                        isTrendingIcon,
-                        "Состояние",
-                        tint = MaterialTheme.colorScheme.primary,
-                        modifier = Modifier.size(30.dp)
-                    )
-                }
-                Text(
-                    "Вакансии: ${r.vacanciesCount}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    "Резюме: ${r.resumesCount}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Bold
-                )
-                Text(
-                    r.routeDescription,
-                    style = MaterialTheme.typography.bodyMedium,
-                    fontWeight = FontWeight.Light
-                )
-                Spacer(Modifier.height(16.dp))
-            }
+        Column(Modifier.fillMaxWidth().padding(16.dp)) {
+            Text(
+                s.skillName,
+                style = MaterialTheme.typography.headlineSmall,
+                fontWeight = FontWeight.Normal,
+            )
+            Text(
+                "Популярность: ${s.necessity}",
+                style = MaterialTheme.typography.bodyMedium,
+                fontWeight = FontWeight.Light
+            )
         }
     }
 }

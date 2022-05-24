@@ -1,8 +1,6 @@
 package ru.boringowl.myroadmapapp.data.room.model
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 import ru.boringowl.myroadmapapp.model.Route
 import ru.boringowl.myroadmapapp.model.Skill
 import java.util.*
@@ -33,3 +31,12 @@ class SkillEntity (
         model.route?.routeId,
     )
 }
+
+data class SkillWithRoute(
+    @Embedded val skill: SkillEntity,
+    @Relation(
+        parentColumn = "route",
+        entityColumn = "route_id"
+    )
+    val route: RouteEntity
+)

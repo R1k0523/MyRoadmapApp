@@ -10,15 +10,16 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import ru.boringowl.myroadmapapp.data.network.SkillApi
+import ru.boringowl.myroadmapapp.data.room.dao.RouteDao
 import ru.boringowl.myroadmapapp.data.room.dao.SkillDao
 import ru.boringowl.myroadmapapp.data.room.model.SkillEntity
 import ru.boringowl.myroadmapapp.model.Skill
-import java.util.*
 import javax.inject.Inject
 
 
 class SkillRepository @Inject constructor(
     private val dao: SkillDao,
+    private val routeDao: RouteDao,
     private val api: SkillApi
 ) {
     var isLoading by mutableStateOf(false)
@@ -30,20 +31,24 @@ class SkillRepository @Inject constructor(
     suspend fun delete(model: Skill) = dao.delete(entity(model))
     suspend fun delete() = dao.delete()
 
-    fun get(): Flow<List<Skill>> = dao.get()
-        .flowOn(Dispatchers.IO).conflate()
-        .map { f -> f.map { it.toModel() } }
+    fun get(routeId: Int): Flow<List<Skill>> {
+        return dao.getByRoute(routeId)
+            .flowOn(Dispatchers.IO).conflate()
+            .map { f -> f.map { it.skill.toModel(it.route.toModel()) } }
 
-    suspend fun fetchAndSave(
-        routeId: UUID,
-        page: Int = 1,
-        perPage: Int = 20
-    ) {
+    }
+
+    suspend fun fetchAndSave(routeId: Int) {
         withContext(Dispatchers.IO) {
             isLoading = true
             try {
-                val models = api.getByRoute(routeId, page, perPage).items
-                models.forEach { add(it) }
+                val models = api.getByRoute(routeId).items
+                models.forEach {
+                    it.apply {
+                        route = routeDao.get(routeId)?.toModel()
+                    }
+                    add(it)
+                }
             } catch (ex: Exception) {
                 ex.printStackTrace()
             } finally {

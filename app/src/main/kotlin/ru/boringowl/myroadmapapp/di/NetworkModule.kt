@@ -11,6 +11,8 @@ import retrofit2.converter.gson.GsonConverterFactory
 import ru.boringowl.myroadmapapp.BuildConfig
 import ru.boringowl.myroadmapapp.data.datastore.DataStorage
 import ru.boringowl.myroadmapapp.data.network.*
+import ru.boringowl.myroadmapapp.data.room.dao.UserDao
+import ru.boringowl.myroadmapapp.data.room.repos.UserRepository
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
@@ -24,17 +26,6 @@ object NetworkModule {
         .client(client)
         .build()
 
-    @Singleton @Provides
-    fun okhttpClient(dataStorage: DataStorage) : OkHttpClient {
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-        return OkHttpClient.Builder()
-            .addInterceptor(interceptor)
-            .addInterceptor(AuthInterceptor(dataStorage))
-            .readTimeout(60, TimeUnit.SECONDS)
-            .writeTimeout(60, TimeUnit.SECONDS)
-            .build()
-    }
 
     @Singleton @Provides
     fun provideHackApi(client: Retrofit): HackApi = client.create(HackApi::class.java)
@@ -49,4 +40,15 @@ object NetworkModule {
     @Singleton @Provides
     fun provideUserApi(client: Retrofit): UserApi = client.create(UserApi::class.java)
 
+    @Singleton @Provides
+    fun okhttpClient(dataStorage: DataStorage, dao: UserDao) : OkHttpClient {
+        val interceptor = HttpLoggingInterceptor()
+        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
+        return OkHttpClient.Builder()
+            .addInterceptor(interceptor)
+            .addInterceptor(AuthInterceptor(dataStorage, dao))
+            .readTimeout(60, TimeUnit.SECONDS)
+            .writeTimeout(60, TimeUnit.SECONDS)
+            .build()
+    }
 }
