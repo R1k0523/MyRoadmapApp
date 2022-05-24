@@ -15,10 +15,7 @@ import ru.boringowl.myroadmapapp.data.network.UserApi
 import ru.boringowl.myroadmapapp.data.network.errorText
 import ru.boringowl.myroadmapapp.data.room.dao.UserDao
 import ru.boringowl.myroadmapapp.data.room.model.UserEntity
-import ru.boringowl.myroadmapapp.model.LoginData
-import ru.boringowl.myroadmapapp.model.RegisterData
-import ru.boringowl.myroadmapapp.model.RestorePasswordData
-import ru.boringowl.myroadmapapp.model.User
+import ru.boringowl.myroadmapapp.model.*
 import javax.inject.Inject
 
 
@@ -50,8 +47,8 @@ class UserRepository @Inject constructor(
 
     suspend fun login(
         data: LoginData,
-        onSuccess: () -> Unit = {},
-        onError: (message: String) -> Unit = {}
+        onSuccess: suspend () -> Unit = {},
+        onError: suspend (message: String) -> Unit = {}
     ) = dispUploader.load {
         try {
             val token = api.auth(data)
@@ -65,11 +62,38 @@ class UserRepository @Inject constructor(
 
     suspend fun resetPassword(
         data: RestorePasswordData,
-        onSuccess: () -> Unit = {},
-        onError: (message: String) -> Unit = {}
+        onSuccess: suspend () -> Unit = {},
+        onError: suspend (message: String) -> Unit = {}
     ) = dispUploader.load {
         try {
             api.resetPassword(data)
+            onSuccess()
+        } catch (e: HttpException) {
+            onError(e.errorText())
+        }
+    }
+
+    suspend fun update(
+        data: UserEmailData,
+        onSuccess: suspend () -> Unit = {},
+        onError: suspend (message: String) -> Unit = {}
+    ) = dispUploader.load {
+        try {
+            val user = api.updateEmail(data)
+            dao.insert(entity(user))
+            onSuccess()
+        } catch (e: HttpException) {
+            onError(e.errorText())
+        }
+    }
+
+    suspend fun update(
+        data: UpdatePasswordData,
+        onSuccess: suspend () -> Unit = {},
+        onError: suspend (message: String) -> Unit = {}
+    ) = dispUploader.load {
+        try {
+            api.updatePassword(data)
             onSuccess()
         } catch (e: HttpException) {
             onError(e.errorText())
@@ -87,7 +111,6 @@ class UserRepository @Inject constructor(
 
     suspend fun fetchMe() = dispUploader.load {
         val user = api.me()
-        Log.e("REG", "GOT ME")
         dao.delete()
         dao.insert(entity(user))
     }

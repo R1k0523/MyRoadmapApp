@@ -3,6 +3,7 @@ package ru.boringowl.myroadmapapp.data.network
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import ru.boringowl.myroadmapapp.model.*
 
 interface UserApi {
@@ -19,5 +20,11 @@ interface UserApi {
 
     @POST("${ConstantsServer.authEndpoint}/resetPassword")
     suspend fun resetPassword(@Body resetData: RestorePasswordData)
+
+    @PUT(ConstantsServer.authEndpoint)
+    suspend fun updateEmail(@Body userData: UserEmailData) : User
+
+    @POST("${ConstantsServer.authEndpoint}/updatePassword")
+    suspend fun updatePassword(@Body userData: UpdatePasswordData)
 
 }

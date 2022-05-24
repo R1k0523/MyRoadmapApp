@@ -12,6 +12,7 @@ import ru.boringowl.myroadmapapp.presentation.features.auth.signin.SignInScreen
 import ru.boringowl.myroadmapapp.presentation.features.auth.signup.SignUpScreen
 import ru.boringowl.myroadmapapp.presentation.features.hackathons.HackathonsScreen
 import ru.boringowl.myroadmapapp.presentation.features.routes.RoutesScreen
+import ru.boringowl.myroadmapapp.presentation.features.profile.ProfileScreen
 
 enum class NavigationItem(
     var route: String,
@@ -19,7 +20,9 @@ enum class NavigationItem(
     var icon: ImageVector,
     var screen: @Composable (navController: NavController) -> Unit,
 ) {
-    Profile("profile", R.string.nav_profile, Icons.Rounded.Person, {}),
+    Profile("profile", R.string.nav_profile, Icons.Rounded.Person, {
+        ProfileScreen(it)
+    }),
     Settings("settings", R.string.nav_settings, Icons.Rounded.Reorder, {}),
     Hackathons("hackathons", R.string.nav_hackathon, Icons.Rounded.SafetyDivider, {
         HackathonsScreen(it)
