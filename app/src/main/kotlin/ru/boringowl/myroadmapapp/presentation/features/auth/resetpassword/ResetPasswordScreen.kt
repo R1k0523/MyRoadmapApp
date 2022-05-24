@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.boringowl.myroadmapapp.R
+import ru.boringowl.myroadmapapp.presentation.base.LoadingButton
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class)
 @Composable
@@ -97,16 +98,11 @@ fun OnDefault(navController: NavController, viewModel: ResetPasswordViewModel) {
         )
     }
     Spacer(modifier = Modifier.height(8.dp))
-    Button(
+    LoadingButton(
         modifier = Modifier.fillMaxWidth(),
         onClick = { viewModel.resetPassword() },
-        enabled = viewModel.isUIEnabled(),
-        content = {
-            if (viewModel.isUIEnabled())
-                Text( stringResource(R.string.reset_password))
-            else
-                CircularProgressIndicator()
-        },
+        loading = !viewModel.isUIEnabled(),
+        text = stringResource(R.string.reset_password),
     )
     Divider(
         Modifier

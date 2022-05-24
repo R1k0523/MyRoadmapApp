@@ -32,17 +32,16 @@ class ProfileViewModel @Inject constructor(
     var usernameText by mutableStateOf("")
     var newPasswordText by mutableStateOf("")
     var emailText by mutableStateOf("")
-    init {
-        launchIO {
-            repository.get().distinctUntilChanged().collect { u ->
-                u?.let {
-                    emailText = u.email
-                    usernameText = u.username
-                }
-                user.value = u
+    
+    fun fetch() = launchIO {
+        repository.get().distinctUntilChanged().collect { u ->
+            u?.let {
+                emailText = u.email
+                usernameText = u.username
             }
-            repository.fetchMe()
+            user.value = u
         }
+        repository.fetchMe()
     }
 
     fun resetEmail() {

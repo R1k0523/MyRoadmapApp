@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.boringowl.myroadmapapp.R
+import ru.boringowl.myroadmapapp.presentation.base.LoadingButton
 import ru.boringowl.myroadmapapp.presentation.base.PasswordTextField
 import ru.boringowl.myroadmapapp.presentation.navigation.NavigationItem
 
@@ -82,16 +83,11 @@ fun SignInScreen(navController: NavController, viewModel: SignInViewModel = hilt
                     )
                     else -> {}
                 }
-                Button(
+                LoadingButton(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = { viewModel.signIn() },
-                    enabled = viewModel.isUIEnabled(),
-                    content = {
-                        if (viewModel.isUIEnabled())
-                            Text(stringResource(R.string.signin))
-                        else
-                            CircularProgressIndicator()
-                    },
+                    loading = !viewModel.isUIEnabled(),
+                    text = stringResource(R.string.signin),
                 )
                 Divider(Modifier.fillMaxWidth(0.6f).padding(0.dp, 20.dp))
                 Row(

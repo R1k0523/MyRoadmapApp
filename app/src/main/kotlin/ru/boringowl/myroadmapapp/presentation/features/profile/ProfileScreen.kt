@@ -9,6 +9,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -24,10 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.boringowl.myroadmapapp.R
 import ru.boringowl.myroadmapapp.model.Route
-import ru.boringowl.myroadmapapp.presentation.base.EditableTextField
-import ru.boringowl.myroadmapapp.presentation.base.PasswordTextField
-import ru.boringowl.myroadmapapp.presentation.base.rememberForeverLazyListState
-import ru.boringowl.myroadmapapp.presentation.base.resetScroll
+import ru.boringowl.myroadmapapp.presentation.base.*
 import ru.boringowl.myroadmapapp.presentation.features.auth.AccountViewModel
 
 
@@ -100,21 +98,20 @@ fun ProfileScreen(
                     modifier = Modifier.fillMaxWidth(),
                 )
                 AnimatedVisibility(visible = viewModel.isEmailChanging) {
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Button(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = { viewModel.update {
-                            focusManager.clearFocus()
-                            snackbarHostState.showSnackbar(viewModel.snackBarText())
-                        } },
-                        enabled = viewModel.isUIEnabled(),
-                        content = {
-                            if (viewModel.isUIEnabled())
-                                Text(stringResource(R.string.save))
-                            else
-                                CircularProgressIndicator()
-                        },
-                    )
+                    Column {
+                        Spacer(modifier = Modifier.height(8.dp))
+                        LoadingButton(
+                            modifier = Modifier.fillMaxWidth(),
+                            onClick = {
+                                viewModel.update {
+                                    focusManager.clearFocus()
+                                    snackbarHostState.showSnackbar(viewModel.snackBarText())
+                                }
+                            },
+                            loading = !viewModel.isUIEnabled(),
+                            text = stringResource(R.string.save)
+                        )
+                    }
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 AnimatedVisibility(visible = viewModel.isPasswordChanging) {
@@ -139,41 +136,34 @@ fun ProfileScreen(
                             isInvalid = viewModel.isError()
                         )
                         Spacer(modifier = Modifier.height(16.dp))
-                        Button(
+                        LoadingButton(
                             modifier = Modifier.fillMaxWidth(),
                             onClick = { viewModel.updatePassword {
                                 focusManager.clearFocus()
                                 snackbarHostState.showSnackbar(viewModel.snackBarText())
                             }  },
-                            enabled = viewModel.isUIEnabled(),
-                            content = {
-                                if (viewModel.isUIEnabled())
-                                    Text(stringResource(R.string.save))
-                                else
-                                    CircularProgressIndicator()
-                            },
+                            loading = !viewModel.isUIEnabled(),
+                            text = stringResource(R.string.save),
                         )
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
-                Button(
+                LoadingButton(
                     modifier = Modifier.fillMaxWidth(),
                     onClick = { viewModel.isPasswordChanging = !viewModel.isPasswordChanging },
-                    enabled = viewModel.isUIEnabled(),
-                    content = {
-                        if (viewModel.isUIEnabled())
-                            Text(stringResource(
-                                if (viewModel.isPasswordChanging)
-                                    R.string.cancel
-                                else
-                                    R.string.update_password)
-                            )
+                    loading = !viewModel.isUIEnabled(),
+                    text = stringResource(
+                        if (viewModel.isPasswordChanging)
+                            R.string.cancel
                         else
-                            CircularProgressIndicator()
-                    },
+                            R.string.update_password)
                 )
             }
 
         }
 
+    }
+    LaunchedEffect(true) {
+        viewModel.fetch()
     }
 }

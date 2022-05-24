@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.boringowl.myroadmapapp.R
+import ru.boringowl.myroadmapapp.presentation.base.LoadingButton
 import ru.boringowl.myroadmapapp.presentation.base.PasswordTextField
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class)
@@ -91,16 +92,12 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
                     )
                     else -> {}
                 }
-                Button(
+                LoadingButton(
                     modifier = Modifier.fillMaxWidth(),
-                    onClick = { viewModel.signUp() },
+                    onClick = { viewModel.signUp()},
                     enabled = viewModel.isUIEnabled() && viewModel.passwordsAreSimilar(),
-                    content = {
-                        if (viewModel.isUIEnabled())
-                            Text(stringResource(R.string.signup))
-                        else
-                            CircularProgressIndicator()
-                    },
+                    loading = !viewModel.isUIEnabled(),
+                    text = stringResource(R.string.signup),
                 )
                 Divider(Modifier.fillMaxWidth(0.6f).padding(0.dp, 20.dp))
                 Row(
