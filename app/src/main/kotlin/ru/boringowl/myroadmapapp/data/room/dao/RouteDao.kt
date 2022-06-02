@@ -20,6 +20,9 @@ interface RouteDao : BaseDao<RouteEntity> {
     @Query("DELETE FROM routes")
     suspend fun delete()
 
+    @Query("SELECT EXISTS(SELECT * FROM routes WHERE route_id = :id)")
+    fun isExist(id : Int) : Boolean
+
     @Query("SELECT * FROM routes WHERE route_id = :id")
     suspend fun get(id: Int): RouteEntity?
 

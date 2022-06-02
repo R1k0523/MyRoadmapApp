@@ -145,6 +145,10 @@ fun HarmonizedTheme(
 		color = colors.background,
 		darkIcons = !useDarkTheme
 	)
+	systemUiController.setNavigationBarColor(
+		color = colors.surfaceVariant,
+		darkIcons = !useDarkTheme
+	)
     val extendedColors = setupCustomColors(colors, !useDarkTheme)
     CompositionLocalProvider(LocalExtendedColors provides extendedColors) {
         MaterialTheme(

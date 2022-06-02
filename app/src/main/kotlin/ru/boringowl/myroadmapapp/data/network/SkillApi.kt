@@ -4,6 +4,7 @@ import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 import ru.boringowl.myroadmapapp.model.ListResponse
+import ru.boringowl.myroadmapapp.model.PageResponse
 import ru.boringowl.myroadmapapp.model.PagedResponse
 import ru.boringowl.myroadmapapp.model.Skill
 import java.util.*

@@ -16,10 +16,13 @@ interface HackathonDao : BaseDao<HackathonEntity> {
     suspend fun delete(id: UUID)
 
     @Query("SELECT * FROM hackathons")
-    fun get(): Flow<List<HackathonEntity>>
+    fun get(): PagingSource<Int, HackathonEntity>
 
     @Query("DELETE FROM hackathons")
     suspend fun delete()
+
+    @Query("SELECT EXISTS(SELECT * FROM hackathons WHERE hack_id = :id)")
+    fun isExist(id : UUID) : Boolean
 
     @Query("SELECT * FROM hackathons WHERE hack_id = :id")
     suspend fun get(id: UUID): HackathonEntity?

@@ -8,3 +8,8 @@ object StringUtils {
     fun checkEmail(email: String) =
         Regex("[\\w-.]+@([\\w-]+\\.)+[\\w-]{2,4}").matches(email)
 }
+fun Double.format(digits:Int) = String.Companion.format(
+    java.util.Locale.ENGLISH,
+    "%#.${digits}f",
+    this
+)

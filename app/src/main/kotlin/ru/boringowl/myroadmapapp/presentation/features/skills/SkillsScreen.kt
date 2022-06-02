@@ -1,13 +1,12 @@
 package ru.boringowl.myroadmapapp.presentation.features.skills
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -82,10 +81,7 @@ fun SkillsScreen(
                     }
                 }
             })
-        },
-        floatingActionButtonPosition = FabPosition.End,
-        floatingActionButton = { FloatingActionButton(onClick = { viewModel.delete() }) {
-        }}
+        }
     ) { p ->
         val skills = viewModel.modelList.collectAsState(listOf()).value
         Column(
@@ -108,7 +104,8 @@ fun SkillsScreen(
             LazyColumn(
                 Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                state = rememberForeverLazyListState(stringResource(R.string.nav_routes))
+                state = rememberForeverLazyListState(stringResource(R.string.nav_routes)),
+                contentPadding = PaddingValues(8.dp)
             ) {
                 items(skills.sortedBy { it.skillName }) { s ->
                     AnimatedVisibility(viewModel.isFiltered(s)) {
@@ -126,10 +123,10 @@ fun SkillsScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SkillView(s: Skill) {
-    Card(
+    ElevatedCard(
         Modifier
             .fillMaxWidth()
-            .padding(16.dp, 8.dp)
+            .padding(bottom = 8.dp)
     ) {
         Column(Modifier.fillMaxWidth().padding(16.dp)) {
             Text(

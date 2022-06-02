@@ -9,11 +9,14 @@
     <string name="nav_skills">Навыки</string>
     <string name="nav_login">Вход</string>
     <string name="nav_register">Регистрация</string>
+    <string name="nav_books">Книги</string>
+    <string name="nav_splash">splash</string>
     <string name="nav_forgot_password">Восстановление пароля</string>
     <string name="nav_settings">Настройки</string>
 
 
     <string name="username">Имя пользователя</string>
+    <string name="notes">Заметки</string>
     <string name="password">Пароль</string>
     <string name="old_password">Старый пароль</string>
     <string name="new_password">Новый пароль</string>

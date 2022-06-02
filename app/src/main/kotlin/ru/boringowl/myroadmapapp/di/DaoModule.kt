@@ -46,4 +46,10 @@ object DaoModule {
 
     @Singleton @Provides
     fun provideHackathonRemoteDao(db: AppDatabase) = db.hackRemoteDao()
+
+    @Singleton @Provides
+    fun provideBookPostDao(db: AppDatabase) = db.bookPostDao()
+
+    @Singleton @Provides
+    fun provideBookRemoteDao(db: AppDatabase) = db.bookRemoteDao()
 }

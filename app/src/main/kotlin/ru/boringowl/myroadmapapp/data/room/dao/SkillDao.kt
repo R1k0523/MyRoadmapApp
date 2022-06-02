@@ -19,6 +19,9 @@ interface SkillDao : BaseDao<SkillEntity> {
     @Query("DELETE FROM skills")
     suspend fun delete()
 
+    @Query("SELECT EXISTS(SELECT * FROM skills WHERE skill_id = :id)")
+    fun isExist(id : Int) : Boolean
+
     @Query("SELECT * FROM skills WHERE skill_id = :id")
     suspend fun get(id: UUID): SkillEntity?
 }

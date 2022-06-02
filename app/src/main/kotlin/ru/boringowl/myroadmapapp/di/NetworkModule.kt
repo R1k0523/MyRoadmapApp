@@ -39,6 +39,8 @@ object NetworkModule {
     fun provideTodoApi(client: Retrofit): TodoApi = client.create(TodoApi::class.java)
     @Singleton @Provides
     fun provideUserApi(client: Retrofit): UserApi = client.create(UserApi::class.java)
+    @Singleton @Provides
+    fun provideBooksApi(client: Retrofit): BookPostApi = client.create(BookPostApi::class.java)
 
     @Singleton @Provides
     fun okhttpClient(dataStorage: DataStorage, dao: UserDao) : OkHttpClient {

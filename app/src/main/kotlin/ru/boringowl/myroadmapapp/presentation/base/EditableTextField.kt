@@ -3,6 +3,8 @@ package ru.boringowl.myroadmapapp.presentation.base
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.rounded.Cancel
+import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,8 +23,8 @@ fun EditableTextField(
     label: @Composable (() -> Unit)? = { Text(stringResource(R.string.password)) },
     placeholder: @Composable (() -> Unit)? = null,
     trailingIconImageVector: ImageVector = when {
-        enabled -> Icons.Filled.Cancel
-        else -> Icons.Filled.Edit
+        enabled -> Icons.Rounded.Cancel
+        else -> Icons.Rounded.Edit
     },
     trailingIconContentDescription: String = when {
         enabled -> stringResource(R.string.change_field)

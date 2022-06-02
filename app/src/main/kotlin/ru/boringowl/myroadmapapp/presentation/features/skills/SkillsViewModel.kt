@@ -27,12 +27,8 @@ class SkillsViewModel @Inject constructor(
     var isSearchOpened by mutableStateOf(false)
     var searchText by mutableStateOf("")
     fun fetchSkills(routeId: Int) {
-        launchIO {
-            try {
-                repository.fetchAndSave(routeId)
-                repository.get(routeId).distinctUntilChanged().collect { _modelList.value = it }
-            } catch (e: Exception) {}
-        }
+        launchIO { repository.get(routeId).distinctUntilChanged().collect { _modelList.value = it } }
+        launchIO { repository.fetchAndSave(routeId) }
     }
     fun filteredIsEmpty() = modelList.value.none { isFiltered(it) }
     fun isFiltered(model: Skill?) = model != null && model.skillName.lowercase().contains(searchText)

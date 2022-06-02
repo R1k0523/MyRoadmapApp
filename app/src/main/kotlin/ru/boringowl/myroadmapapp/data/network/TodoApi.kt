@@ -23,7 +23,6 @@ interface TodoApi {
             Todo
 
     @DELETE("${ConstantsServer.todoEndpoint}/{id}")
-    suspend fun delete(@Path("id") id: UUID) :
-            String
+    suspend fun delete(@Path("id") id: UUID)
 
 }

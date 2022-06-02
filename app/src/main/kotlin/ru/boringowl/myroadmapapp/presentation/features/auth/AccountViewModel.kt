@@ -23,15 +23,10 @@ class AccountViewModel @Inject constructor(
     private val _currentUser = MutableStateFlow<User?>(null)
     val currentUser = _currentUser.asStateFlow()
 
-    private val _token = MutableStateFlow<String?>(null)
-    val token = _token.asStateFlow()
 
-    init {
-        viewModelScope.launch(Dispatchers.IO) {
-            repository.get().distinctUntilChanged().collect {  _currentUser.value = it }
-            dataStorage.authToken().distinctUntilChanged().collect{ _token.value = it }
-            repository.fetchMe()
-        }
+    fun fetchUser() {
+        launchIO { repository.get().distinctUntilChanged().collect {  _currentUser.value = it } }
+        launchIO { repository.fetchMe() }
     }
 
     fun logOut() = launchIO { repository.logout() }

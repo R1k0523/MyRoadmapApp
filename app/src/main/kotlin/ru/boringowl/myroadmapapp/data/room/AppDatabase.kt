@@ -18,12 +18,15 @@ import ru.boringowl.myroadmapapp.data.room.model.*
         UserEntity::class,
         SkillRemoteKeys::class,
         HackathonRemoteKeys::class,
+        BookPostEntity::class,
+        BookPostRemoteKeys::class,
     ], version = 1, exportSchema = false
 )
 @TypeConverters(RoomConverters::class)
 abstract class AppDatabase : RoomDatabase() {
 
     abstract fun hackDao(): HackathonDao
+    abstract fun bookPostDao(): BookPostDao
     abstract fun routeDao(): RouteDao
     abstract fun skillDao(): SkillDao
     abstract fun skillTodoDao(): SkillTodoDao
@@ -31,7 +34,19 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun userDao(): UserDao
     abstract fun skillRemoteDao(): SkillRemoteDao
     abstract fun hackRemoteDao(): HackathonRemoteDao
+    abstract fun bookRemoteDao(): BookRemoteDao
     companion object {
         const val DATABASE_NAME = "roadmap_db"
+    }
+    suspend fun flushDB() {
+        hackDao().delete()
+        routeDao().delete()
+        skillDao().delete()
+        skillTodoDao().delete()
+        todoDao().delete()
+        userDao().delete()
+        skillRemoteDao().delete()
+        hackRemoteDao().delete()
+        bookPostDao().delete()
     }
 }

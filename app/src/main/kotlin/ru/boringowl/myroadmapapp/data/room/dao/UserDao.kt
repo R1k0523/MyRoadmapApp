@@ -15,6 +15,9 @@ interface UserDao : BaseDao<UserEntity> {
     @Query("SELECT * FROM users_info LIMIT 1")
     fun get(): Flow<UserEntity?>
 
+    @Query("SELECT * FROM users_info LIMIT 1")
+    fun getUser(): UserEntity?
+
     @Query("DELETE FROM users_info")
     suspend fun delete()
 }

@@ -25,15 +25,19 @@ class TodosViewModel @Inject constructor(
 
     private var _modelList = MutableStateFlow<List<Todo>>(emptyList())
     val modelList = _modelList.asStateFlow()
-
+    var loading by mutableStateOf(false)
     var isSearchOpened by mutableStateOf(false)
     var searchText by mutableStateOf("")
+
+
     fun fetchTodos() {
         launchIO {
-            try {
-                repository.synchronizeData()
-                repository.get().distinctUntilChanged().collect { _modelList.value = it }
-            } catch (e: Exception) {}
+            repository.get().distinctUntilChanged().collect { _modelList.value = it }
+        }
+        launchIO {
+            loading = true
+            repository.synchronizeData()
+            loading = false
         }
     }
     fun filteredIsEmpty() = modelList.value.none { isFiltered(it) }

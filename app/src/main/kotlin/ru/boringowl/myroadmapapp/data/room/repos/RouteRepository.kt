@@ -20,10 +20,8 @@ class RouteRepository @Inject constructor(
     private val dao: RouteDao,
     private val api: RouteApi
 ) {
-    var isLoading by mutableStateOf(false)
 
     private fun entity(model: Route) = RouteEntity(model)
-
     suspend fun add(model: Route) = dao.insert(entity(model))
     suspend fun update(model: Route) = dao.update(entity(model))
     suspend fun delete(model: Route) = dao.delete(entity(model))
@@ -35,14 +33,11 @@ class RouteRepository @Inject constructor(
 
     suspend fun fetchAndSave() {
         withContext(Dispatchers.IO) {
-            isLoading = true
             try {
                 val models = api.get().items
                 models.forEach { add(it) }
             } catch (ex: Exception) {
                 ex.printStackTrace()
-            } finally {
-                isLoading = false
             }
         }
     }

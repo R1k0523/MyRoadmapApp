@@ -5,5 +5,5 @@ class Route(var routeId: Int? = null, var routeName: String = "", var routeDescr
     var resumesCount: Int = 0
     var vacanciesCount: Int = 0
 
-    fun index() = resumesCount / vacanciesCount
+    fun index() = if (vacanciesCount != 0) resumesCount / vacanciesCount else 0
 }

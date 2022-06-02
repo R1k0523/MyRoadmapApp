@@ -4,11 +4,17 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.core.DecayAnimation
+import androidx.compose.animation.core.DecayAnimationSpec
+import androidx.compose.animation.rememberSplineBasedDecay
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.ArrowUpward
 import androidx.compose.material.icons.rounded.Close
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.*
@@ -16,6 +22,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -26,8 +33,17 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import androidx.paging.LoadState
+import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.items
 import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
 import coil.request.ImageRequest
+import com.google.accompanist.placeholder.PlaceholderHighlight
+import com.google.accompanist.placeholder.material.fade
+import com.google.accompanist.placeholder.placeholder
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
 import ru.boringowl.myroadmapapp.R
 import ru.boringowl.myroadmapapp.model.Hackathon
 import ru.boringowl.myroadmapapp.presentation.base.TextWithHeader
@@ -41,9 +57,10 @@ fun HackathonsScreen(
     navController: NavController,
     viewModel: HackathonViewModel = hiltViewModel(),
 ) {
+    val state = rememberForeverLazyListState(stringResource(R.string.nav_hackathon))
+    val coroutineScope = rememberCoroutineScope()
     Scaffold(
-        topBar = {
-            SmallTopAppBar(title = {
+        topBar = { SmallTopAppBar(title = {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
                     modifier = Modifier.padding(12.dp, 8.dp)
@@ -51,7 +68,7 @@ fun HackathonsScreen(
                     if (viewModel.isSearchOpened)
                         OutlinedTextField(
                             value = viewModel.searchText,
-                            onValueChange = { viewModel.searchText = it },
+                            onValueChange = { viewModel.updateSearch(it) },
                             singleLine = true,
                             modifier = Modifier
                                 .weight(1f)
@@ -71,8 +88,11 @@ fun HackathonsScreen(
                     IconButton(modifier = Modifier.size(28.dp),
                         onClick = {
                             viewModel.isSearchOpened = !viewModel.isSearchOpened
-                            viewModel.searchText = ""
-                            resetScroll(tag)
+
+                            if (viewModel.searchText.isNotEmpty()) {
+                                viewModel.updateSearch("")
+                                resetScroll(tag)
+                            }
                         }) {
                         if (viewModel.isSearchOpened)
                             Icon(
@@ -88,35 +108,62 @@ fun HackathonsScreen(
                             )
                     }
                 }
-            })
+            }) },
+        floatingActionButtonPosition = FabPosition.End,
+        floatingActionButton = {
+            if (state.firstVisibleItemIndex != 0) {
+                FloatingActionButton(
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    onClick = {
+                    coroutineScope.launch {
+                        state.scrollToItem(0)
+                    }
+                }) {
+                    Icon(
+                        Icons.Rounded.ArrowUpward,
+                        "Вверх",
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+            }
         },
     ) { p ->
-        val hacks = viewModel.modelList.collectAsState().value.filter { viewModel.isFiltered(it) }
-        Column(
-            modifier = Modifier.padding(p).fillMaxSize(),
-            verticalArrangement = Arrangement.Center
+        val hacks = viewModel.modelList.collectAsLazyPagingItems()
+        LazyColumn(
+            Modifier
+                .fillMaxSize().padding(p),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            state = state,
+            contentPadding = PaddingValues(8.dp)
         ) {
-            if (hacks.isEmpty()) {
-                Text(
-                    "Ничего не найдено",
-                    style = MaterialTheme.typography.headlineMedium,
-                    fontWeight = FontWeight.Normal,
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-
-                )
+            items(
+                items = hacks,
+                key = { h -> h.hackId!! },
+            ) { h -> h?.let { HackathonView(it) } }
+            if (hacks.loadState.append == LoadState.Loading) {
+                item {
+                    CircularProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentWidth(Alignment.CenterHorizontally)
+                    )
+                }
             }
-            LazyColumn(
-                Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                state = rememberForeverLazyListState(stringResource(R.string.nav_hackathon))
-            ) {
-                items(hacks) { h ->
-                    HackathonView(h)
+            item {
+                AnimatedVisibility(visible = hacks.itemCount == 0) {
+                    Text(
+                        "Ничего не найдено",
+                        style = MaterialTheme.typography.headlineMedium,
+                        fontWeight = FontWeight.Normal,
+                        color = MaterialTheme.colorScheme.primary,
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+
+                    )
                 }
             }
         }
+
     }
     LaunchedEffect(true) {
         viewModel.fetch()
@@ -128,33 +175,32 @@ fun HackathonsScreen(
 fun HackathonView(h: Hackathon) {
     val opened = remember { mutableStateOf(false) }
     val context = LocalContext.current
-    Card(
-        Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
+    ElevatedCard(
+        Modifier.fillMaxWidth().padding(bottom = 8.dp)
     ) {
         Column {
             h.imageUrl?.let {
                 Box(
-                    modifier = Modifier
-                        .background(Color.DarkGray)
-                        .fillMaxSize()
+                    modifier = Modifier.background(Color.DarkGray).fillMaxSize()
                 ) {
-                    AsyncImage(
+                    var placeholder by remember { mutableStateOf(true)}
+                    SubcomposeAsyncImage(
                         model = ImageRequest.Builder(LocalContext.current)
                             .data(it)
                             .crossfade(true)
                             .build(),
+                        onSuccess = { placeholder = false},
                         contentDescription = "hack_photo",
-                        contentScale = ContentScale.FillWidth,
-                        modifier = Modifier.fillMaxWidth()
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier.fillMaxWidth().height(200.dp).placeholder(visible = placeholder,
+                            highlight = PlaceholderHighlight.fade(), color = MaterialTheme.colorScheme.secondaryContainer)
                     )
                 }
             }
             Column(
                 Modifier
                     .fillMaxWidth()
-                    .padding(16.dp, 8.dp)
+                    .padding(16.dp)
             ) {
                 Text(
                     h.hackTitle,
@@ -177,15 +223,19 @@ fun HackathonView(h: Hackathon) {
                 }
                 Row {
                     Button(
-                        onClick = { opened.value = !opened.value }, modifier = Modifier
+                        onClick = { openLink(h.source, context) },
+                        modifier = Modifier
                             .weight(1f)
-                            .padding(top = 8.dp, end = 4.dp)
-                    ) { Text(stringResource(if (opened.value) R.string.collapse else R.string.more)) }
-                    Button(
-                        onClick = { openLink(h.source, context) }, modifier = Modifier
-                            .weight(1f)
-                            .padding(top = 8.dp, start = 4.dp)
+                            .padding(top = 8.dp, end = 4.dp),
+                        shape = RoundedCornerShape(4.dp)
                     ) { Text(stringResource(R.string.go_to)) }
+                    OutlinedButton(
+                        onClick = { opened.value = !opened.value },
+                        modifier = Modifier
+                            .weight(1f)
+                            .padding(top = 8.dp, start = 4.dp),
+                        shape = RoundedCornerShape(4.dp)
+                    ) { Text(stringResource(if (opened.value) R.string.collapse else R.string.more)) }
                 }
             }
         }

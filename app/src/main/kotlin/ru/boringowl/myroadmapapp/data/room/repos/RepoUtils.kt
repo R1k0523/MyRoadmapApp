@@ -1,20 +1,32 @@
 package ru.boringowl.myroadmapapp.data.room.repos
 
+import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import retrofit2.HttpException
+import ru.boringowl.myroadmapapp.data.network.errorText
+import java.net.UnknownHostException
 
-class DispUploader(val onStart: () -> Unit, val onFinish: () -> Unit) {
-    suspend fun load(onError: suspend (() -> Unit) = {}, toDo: suspend () -> Unit) {
-        withContext(Dispatchers.IO) {
-            onStart()
-            try {
-                toDo()
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-                onError()
-            } finally {
-                onFinish()
-            }
+suspend fun loadWithIO(
+    onError: suspend (() -> Unit) = {},
+    onNetworkError: suspend ((msg: String) -> Unit) = {},
+    onSuccess: suspend (() -> Unit) = {},
+    onFinish: suspend (() -> Unit) = {},
+    toDo: suspend () -> Unit,
+) {
+    withContext(Dispatchers.IO) {
+        try {
+            toDo()
+            onSuccess()
+        } catch (e: HttpException) {
+            onNetworkError(e.errorText())
+        } catch (e: UnknownHostException) {
+            onNetworkError("Отсутствует интернет-соединение")
+        } catch (ex: Exception) {
+            Log.e("OSHIBKA", ex.message.toString())
+            onError()
+        } finally {
+            onFinish()
         }
     }
 }

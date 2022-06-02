@@ -1,5 +1,6 @@
 package ru.boringowl.myroadmapapp.presentation.features.routes
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -19,26 +20,35 @@ class RoutesViewModel @Inject constructor(
     private val repository: RouteRepository,
     private val todoRepository: TodoRepository,
 ) : ViewModel() {
-
     private var _modelList = MutableStateFlow<List<Route>>(emptyList())
     val modelList = _modelList.asStateFlow()
-
+    var onError: suspend (msg: String) -> Unit = {}
     var isSearchOpened by mutableStateOf(false)
     var isDialogOpened by mutableStateOf(false)
     var searchText by mutableStateOf("")
     var todoName by mutableStateOf("")
     var routeName by mutableStateOf("")
     var pickedRoute by mutableStateOf(-1)
-    init {
+
+    fun fetch() {
         launchIO {
             repository.get().distinctUntilChanged().collect {  _modelList.value = it }
+        }
+        launchIO {
             repository.fetchAndSave()
         }
     }
+
     fun filteredIsEmpty() = modelList.value.none { isFiltered(it) }
     fun isFiltered(model: Route?) = model != null && model.routeName.lowercase().contains(searchText)
-    fun add() = launchIO {
-        todoRepository.add(pickedRoute, "$todoName ($routeName)")
+    fun add(
+        onSuccess: suspend () -> Unit,
+        onError: suspend (msg: String) -> Unit,
+    ) = launchIO {
+        todoRepository.add(pickedRoute, "$todoName ($routeName)",
+            onError = { onError("Сетевая ошибка") },
+            onSuccess = onSuccess
+        )
     }
     fun delete() = launchIO { repository.delete() }
 }

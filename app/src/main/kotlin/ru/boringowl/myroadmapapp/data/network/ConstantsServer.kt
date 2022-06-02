@@ -5,6 +5,7 @@ object ConstantsServer {
     const val routeEndpoint = "api/route"
     const val skillEndpoint = "api/skill"
     const val skillTodoEndpoint = "api/st"
+    const val booksEndpoint = "api/books"
     const val todoEndpoint = "api/todo"
     const val authEndpoint = "auth"
     const val vacancyEndpoint = "api/vacancy"

@@ -21,15 +21,17 @@ object RepositoryModule {
     @Singleton @Provides
     fun provideHackathonRepository(dao: HackathonDao, api: HackApi, db: AppDatabase) = HackathonRepository(dao, api, db)
     @Singleton @Provides
-    fun provideUserRepository(dao: UserDao, api: UserApi, ds: DataStorage) = UserRepository(dao, api, ds)
+    fun provideUserRepository(dao: UserDao, api: UserApi, ds: DataStorage, db: AppDatabase) = UserRepository(dao, api, ds, db)
     @Singleton @Provides
     fun provideRouteRepository(dao: RouteDao, api: RouteApi) = RouteRepository(dao, api)
     @Singleton @Provides
     fun provideTodoRepository(dao: TodoDao, repo: TodoSkillRepository, api: TodoApi) = TodoRepository(dao, repo, api)
     @Singleton @Provides
-    fun provideTodoSkillRepository(dao: SkillTodoDao, api: SkillTodoApi) = TodoSkillRepository(dao, api)
+    fun provideTodoSkillRepository(dao: SkillTodoDao ,todoDao: TodoDao, api: SkillTodoApi) = TodoSkillRepository(dao, todoDao, api)
     @Singleton @Provides
     fun provideSkillRepository(dao: SkillDao, routeDao: RouteDao, api: SkillApi) = SkillRepository(dao, routeDao, api)
+    @Singleton @Provides
+    fun provideBooksRepository(dao: BookPostDao, api: BookPostApi, db: AppDatabase) = BooksRepository(dao, api, db)
     @Singleton @Provides
     fun provideDataStore(@ApplicationContext context: Context): DataStorage = DataStorageImpl(context)
 

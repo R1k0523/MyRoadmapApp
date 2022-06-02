@@ -4,6 +4,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material.icons.rounded.Visibility
+import androidx.compose.material.icons.rounded.VisibilityOff
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -24,8 +26,8 @@ fun PasswordTextField(
     label: @Composable (() -> Unit)? = { Text(stringResource(R.string.password)) },
     placeholder: @Composable (() -> Unit)? = null,
     trailingIconImageVector: ImageVector = when {
-        passwordVisible -> Icons.Filled.Visibility
-        else -> Icons.Filled.VisibilityOff
+        passwordVisible -> Icons.Rounded.Visibility
+        else -> Icons.Rounded.VisibilityOff
     },
     trailingIconContentDescription: String = when {
         passwordVisible -> stringResource(R.string.hide_password)

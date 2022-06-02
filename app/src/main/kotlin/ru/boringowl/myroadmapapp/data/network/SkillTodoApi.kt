@@ -2,16 +2,17 @@ package ru.boringowl.myroadmapapp.data.network
 
 import retrofit2.http.*
 import ru.boringowl.myroadmapapp.model.ListResponse
+import ru.boringowl.myroadmapapp.model.PageResponse
 import ru.boringowl.myroadmapapp.model.SkillTodo
 import java.util.*
 
 interface SkillTodoApi {
-    @GET("${ConstantsServer.skillTodoEndpoint}/{todoId}")
-    suspend fun get(@Path("todoId") todoId: UUID) :
+    @GET("${ConstantsServer.skillTodoEndpoint}/todo/{todoId}")
+    suspend fun getByTodo(@Path("todoId") todoId: UUID) :
             ListResponse<SkillTodo>
 
-    @GET("${ConstantsServer.skillTodoEndpoint}/{skillId}/{todoId}")
-    suspend fun get(@Path("skillId") skillId: UUID, @Path("todoId") todoId: UUID) :
+    @GET("${ConstantsServer.skillTodoEndpoint}/{skillTodoId}")
+    suspend fun get(@Path("skillTodoId") skillTodoId: UUID) :
             SkillTodo
 
     @POST(ConstantsServer.skillTodoEndpoint)

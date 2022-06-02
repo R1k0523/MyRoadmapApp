@@ -12,48 +12,48 @@ class SkillTodoEntity (
     @PrimaryKey
     @ColumnInfo(name="skill_todo_id")
     var skillTodoId: UUID,
-    @ColumnInfo(name="skill")
-    var skillId: UUID,
+    @ColumnInfo(name="skill_name")
+    var skillName: String = "",
+    @ColumnInfo(name="manual_name")
+    var manualName: String = "",
     @ColumnInfo(name="todo")
     var todoId: UUID,
     @ColumnInfo(name="progress")
     var progress: Int = 0,
+    @ColumnInfo(name="necessity")
+    var necessity: Int = 0,
     @ColumnInfo(name="notes")
     var notes: String = "",
+    @ColumnInfo(name="binary_progress")
+    var binaryProgress: Boolean = false,
+    @ColumnInfo(name="favorite")
+    var favorite: Boolean = false,
 ) {
     @ColumnInfo(name="uploaded")
     var uploaded: Boolean = true
 
-    fun toModel(skill: Skill? = null, todo: Todo? = null): SkillTodo = SkillTodo().also {
+    fun toModel(todo: Todo? = null): SkillTodo = SkillTodo().also {
         it.skillTodoId = skillTodoId
-        it.skill = skill
+        it.skillName = skillName
+        it.manualName = manualName
         it.todo = todo
         it.progress = progress
+        it.necessity = necessity
         it.notes = notes
-    }
-    fun toModel(): SkillTodo = SkillTodo().also { st ->
-        st.skillTodoId = skillTodoId
-        st.skill = Skill().also { it.skillId = skillId }
-        st.todo = Todo().also { it.todoId = todoId }
-        st.progress = progress
-        st.notes = notes
+        it.binaryProgress = binaryProgress
+        it.favorite = favorite
     }
 
-    constructor(model: SkillTodo) : this(
+    constructor(model: SkillTodo, todoId: UUID? = null) : this(
         model.skillTodoId!!,
-        model.skill!!.skillId!!,
-        model.todo!!.todoId!!,
+        model.skillName,
+        model.manualName,
+        model.todo?.todoId ?: todoId!!,
         model.progress,
+        model.necessity,
         model.notes,
+        model.binaryProgress,
+        model.favorite,
     )
 }
 
-
-data class SkillTodoWithSkill(
-    @Embedded val skillTodo: SkillTodoEntity,
-    @Relation(
-        parentColumn = "skill",
-        entityColumn = "skill_id"
-    )
-    val skill: SkillEntity
-)
