@@ -52,6 +52,8 @@ fun RootScreen(
     }
 
     var (selectedItem, select) = remember { mutableStateOf(0) }
+    if (user == null)
+        select(0)
     Scaffold(
         bottomBar = {
             if (!animationDisplayed) {
