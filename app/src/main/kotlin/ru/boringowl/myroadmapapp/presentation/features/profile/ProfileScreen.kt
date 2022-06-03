@@ -16,6 +16,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
@@ -141,11 +142,11 @@ fun ProfileScreen(
                         else R.string.update_password
                     )
                 )
-                Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth().height(100.dp).padding(top = 16.dp)) {
+                Row(horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth().height(70.dp).padding(top = 16.dp)) {
                     Themes.values().forEach {
                         SuggestionChip(
                             onClick = { accountViewModel.setTheme(it) },
-                            label = { Text(it.normalName) },
+                            label = { Text(it.normalName, Modifier.fillMaxWidth(), textAlign = TextAlign.Center) },
                             enabled = it.name != accountViewModel.theme.collectAsState().value,
                             modifier = Modifier.weight(0.3f).fillMaxHeight().padding(2.dp)
                         )
