@@ -34,7 +34,7 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
             Column(Modifier.fillMaxWidth().fillMaxHeight(0.3f)) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_myroadmap),
-                    contentDescription = "Logo",
+                    contentDescription = stringResource(R.string.logo),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .fillMaxSize()
@@ -44,16 +44,14 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
                 Modifier.fillMaxWidth().fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Spacer(modifier = Modifier.height(32.dp))
                 OutlinedTextField(
                     value = viewModel.username,
                     onValueChange = { viewModel.setNewUsername(it) },
                     label = { Text(stringResource(R.string.username)) },
                     singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(top = 32.dp, bottom = 8.dp),
                     isError = viewModel.isError()
                 )
-                Spacer(modifier = Modifier.height(8.dp))
                 OutlinedTextField(
                     value = viewModel.email,
                     onValueChange = { viewModel.setNewEmail(it) },
@@ -62,18 +60,14 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
                     modifier = Modifier.fillMaxWidth(),
                     isError = viewModel.isError()
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-
                 PasswordTextField(
                     password = viewModel.password,
                     onPasswordChange = { viewModel.setNewPassword(it) },
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 8.dp),
                     passwordVisible = viewModel.passwordVisible,
                     onPasswordVisibleChange = { viewModel.passwordVisible = it },
                     isInvalid = viewModel.isError()
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-
                 PasswordTextField(
                     password = viewModel.passwordAgain,
                     onPasswordChange = { viewModel.setAgainPassword(it) },
@@ -83,7 +77,6 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
                     onPasswordVisibleChange = { viewModel.passwordAgainVisible = it },
                     isInvalid = viewModel.isError() || !viewModel.passwordsAreSimilar()
                 )
-                Spacer(modifier = Modifier.height(16.dp))
                 when (val state = viewModel.state.value) {
                     is SignUpState.Error -> Text(
                         text = state.error,
@@ -93,7 +86,7 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
                     else -> {}
                 }
                 LoadingButton(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
                     onClick = { viewModel.signUp()},
                     enabled = viewModel.isUIEnabled() && viewModel.passwordsAreSimilar(),
                     loading = !viewModel.isUIEnabled(),
@@ -105,9 +98,7 @@ fun SignUpScreen(navController: NavController, viewModel: SignUpViewModel = hilt
                         .fillMaxWidth()
                         .clickable { navController.popBackStack() }
                         .padding(0.dp, 8.dp)) {
-                    Text(
-                        text = stringResource(R.string.has_account)
-                    )
+                    Text(stringResource(R.string.has_account))
                     Spacer(Modifier.weight(1f))
                     Text(
                         text = stringResource(R.string.signin),

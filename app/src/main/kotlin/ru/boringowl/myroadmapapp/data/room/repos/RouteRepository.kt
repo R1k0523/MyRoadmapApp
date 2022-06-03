@@ -1,15 +1,11 @@
 package ru.boringowl.myroadmapapp.data.room.repos
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
-import ru.boringowl.myroadmapapp.data.network.RouteApi
+import ru.boringowl.myroadmapapp.data.network.api.RouteApi
 import ru.boringowl.myroadmapapp.data.room.dao.RouteDao
 import ru.boringowl.myroadmapapp.data.room.model.RouteEntity
 import ru.boringowl.myroadmapapp.model.Route
@@ -31,14 +27,8 @@ class RouteRepository @Inject constructor(
         .flowOn(Dispatchers.IO).conflate()
         .map { f -> f.map { it.toModel() } }
 
-    suspend fun fetchAndSave() {
-        withContext(Dispatchers.IO) {
-            try {
-                val models = api.get().items
-                models.forEach { add(it) }
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-            }
-        }
+    suspend fun fetchAndSave() = loadWithIO {
+        val models = api.get().items
+        models.forEach { add(it) }
     }
 }

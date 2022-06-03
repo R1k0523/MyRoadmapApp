@@ -5,16 +5,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
-import androidx.paging.PagingData
-import androidx.paging.filter
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
-import ru.boringowl.myroadmapapp.data.room.repos.HackathonRepository
-import ru.boringowl.myroadmapapp.data.room.repos.RouteRepository
+import kotlinx.coroutines.flow.distinctUntilChanged
+import ru.boringowl.myroadmapapp.data.network.dto.UpdatePasswordData
+import ru.boringowl.myroadmapapp.data.network.dto.UserEmailData
 import ru.boringowl.myroadmapapp.data.room.repos.UserRepository
-import ru.boringowl.myroadmapapp.model.*
+import ru.boringowl.myroadmapapp.model.User
 import ru.boringowl.myroadmapapp.presentation.base.launchIO
 import javax.inject.Inject
 
@@ -23,7 +19,7 @@ class ProfileViewModel @Inject constructor(
     private val repository: UserRepository
 ) : ViewModel() {
     private val user: MutableState<User?> = mutableStateOf(null)
-    var state: MutableState<ProfileState> = mutableStateOf(ProfileState.Default())
+    var state: MutableState<ProfileState> = mutableStateOf(ProfileState.Default)
     var isPasswordChanging by mutableStateOf(false)
     var isEmailChanging by mutableStateOf(false)
     var passwordVisible by mutableStateOf(false)
@@ -50,8 +46,9 @@ class ProfileViewModel @Inject constructor(
         emailText = user.value?.email ?: ""
     }
     fun updatePassword(onFinish: suspend () -> Unit) = launchIO {
-        state.value = ProfileState.Loading()
-        repository.update(UpdatePasswordData(
+        state.value = ProfileState.Loading
+        repository.update(
+            UpdatePasswordData(
             passwordText, newPasswordText
         ),
         onSuccess = {
@@ -67,7 +64,7 @@ class ProfileViewModel @Inject constructor(
         })
     }
     fun update(onFinish: suspend () -> Unit) = launchIO {
-        state.value = ProfileState.Loading()
+        state.value = ProfileState.Loading
         repository.update(
             UserEmailData(emailText),
             onSuccess = {
@@ -92,17 +89,17 @@ class ProfileViewModel @Inject constructor(
     }
     fun setPassword(pass: String) {
         passwordText = pass
-        state.value = ProfileState.Default()
+        state.value = ProfileState.Default
     }
     fun setNewPassword(pass: String) {
         newPasswordText = pass
-        state.value = ProfileState.Default()
+        state.value = ProfileState.Default
     }
 }
 
-sealed class ProfileState() {
-    class Default : ProfileState()
-    class Loading : ProfileState()
+sealed class ProfileState {
+    object Default : ProfileState()
+    object Loading : ProfileState()
     class Error(val error: String = "") : ProfileState()
     class Success(val text: String = "") : ProfileState()
 }

@@ -21,7 +21,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.boringowl.myroadmapapp.R
-import ru.boringowl.myroadmapapp.model.Skill
 import ru.boringowl.myroadmapapp.presentation.base.rememberForeverLazyListState
 import ru.boringowl.myroadmapapp.presentation.base.resetScroll
 
@@ -33,76 +32,24 @@ fun SkillsScreen(
     routeId: Int,
     viewModel: SkillsViewModel = hiltViewModel(),
 ) {
-    Scaffold(
-        topBar = {
-            SmallTopAppBar(title = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(12.dp, 8.dp)
-                ) {
-                    if (viewModel.isSearchOpened)
-                        OutlinedTextField(
-                            value = viewModel.searchText,
-                            onValueChange = { viewModel.searchText = it },
-                            singleLine = true,
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(50.dp),
-                            textStyle = MaterialTheme.typography.bodyMedium,
-                        )
-                    else {
-                        Text(
-                            modifier = Modifier.weight(1f),
-                            text = stringResource(R.string.nav_skills),
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    val tag = stringResource(R.string.nav_skills)
-                    IconButton(modifier = Modifier.size(28.dp),
-                        onClick = {
-                            viewModel.isSearchOpened = !viewModel.isSearchOpened
-                            viewModel.searchText = ""
-                            resetScroll(tag)
-                        }) {
-                        if (viewModel.isSearchOpened)
-                            Icon(
-                                Icons.Rounded.Close,
-                                "Закрыть",
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        else
-                            Icon(
-                                Icons.Rounded.Search,
-                                "Найти",
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                    }
-                }
-            })
-        }
-    ) { p ->
+    Scaffold(topBar = { SkillsTopBar(viewModel) }) { p ->
         val skills = viewModel.modelList.collectAsState(listOf()).value
         Column(
-            modifier = Modifier
-                .padding(p)
-                .fillMaxSize(),
+            modifier = Modifier.padding(p).fillMaxSize(),
             verticalArrangement = Arrangement.Center
         ) {
             if (viewModel.filteredIsEmpty()) {
                 Text(
-                    "Ничего не найдено",
+                    stringResource(id = R.string.nothing_found),
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Normal,
                     color = MaterialTheme.colorScheme.primary,
                     modifier = Modifier.fillMaxWidth(),
                     textAlign = TextAlign.Center
-
                 )
             }
             LazyColumn(
-                Modifier.fillMaxSize(),
+                modifier = Modifier.fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 state = rememberForeverLazyListState(stringResource(R.string.nav_routes)),
                 contentPadding = PaddingValues(8.dp)
@@ -120,27 +67,44 @@ fun SkillsScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
-fun SkillView(s: Skill) {
-    ElevatedCard(
-        Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp)
-    ) {
-        Column(Modifier.fillMaxWidth().padding(16.dp)) {
-            Text(
-                s.skillName,
-                style = MaterialTheme.typography.headlineSmall,
-                fontWeight = FontWeight.Normal,
-            )
-            Text(
-                "Популярность: ${s.necessity}",
-                style = MaterialTheme.typography.bodyMedium,
-                fontWeight = FontWeight.Light
-            )
+fun SkillsTopBar(viewModel: SkillsViewModel) {
+    val icon = if (viewModel.isSearchOpened) Icons.Rounded.Close else Icons.Rounded.Search
+    SmallTopAppBar(title = {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(12.dp, 8.dp)
+        ) {
+            if (viewModel.isSearchOpened)
+                OutlinedTextField(
+                    value = viewModel.searchText,
+                    onValueChange = { viewModel.searchText = it },
+                    singleLine = true,
+                    modifier = Modifier.weight(1f).height(50.dp),
+                    textStyle = MaterialTheme.typography.bodyMedium,
+                )
+            else {
+                Text(
+                    modifier = Modifier.weight(1f),
+                    text = stringResource(R.string.nav_skills),
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold
+                )
+            }
+            val tag = stringResource(R.string.nav_skills)
+            IconButton(modifier = Modifier.size(28.dp).padding(8.dp),
+                onClick = {
+                    viewModel.isSearchOpened = !viewModel.isSearchOpened
+                    viewModel.searchText = ""
+                    resetScroll(tag)
+                }) {
+                Icon(
+                    imageVector = icon,
+                    contentDescription = stringResource(R.string.search),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
         }
-    }
+    })
 }
-
-

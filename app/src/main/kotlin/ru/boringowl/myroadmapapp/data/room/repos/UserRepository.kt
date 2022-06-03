@@ -1,22 +1,17 @@
 package ru.boringowl.myroadmapapp.data.room.repos
 
-import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import retrofit2.HttpException
 import ru.boringowl.myroadmapapp.data.datastore.DataStorage
-import ru.boringowl.myroadmapapp.data.network.UserApi
-import ru.boringowl.myroadmapapp.data.network.errorText
+import ru.boringowl.myroadmapapp.data.network.api.UserApi
+import ru.boringowl.myroadmapapp.data.network.dto.*
 import ru.boringowl.myroadmapapp.data.room.AppDatabase
 import ru.boringowl.myroadmapapp.data.room.dao.UserDao
 import ru.boringowl.myroadmapapp.data.room.model.UserEntity
-import ru.boringowl.myroadmapapp.model.*
+import ru.boringowl.myroadmapapp.model.User
 import javax.inject.Inject
 
 
@@ -26,9 +21,6 @@ class UserRepository @Inject constructor(
     private val dataStorage: DataStorage,
     private val db: AppDatabase,
 ) {
-    private var isLoading by mutableStateOf(false)
-
-
     private fun entity(model: User) = UserEntity(model)
 
     suspend fun register(

@@ -1,22 +1,14 @@
 package ru.boringowl.myroadmapapp.data.room.repos
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import retrofit2.HttpException
-import ru.boringowl.myroadmapapp.data.network.TodoApi
-import ru.boringowl.myroadmapapp.data.network.errorText
-import ru.boringowl.myroadmapapp.data.room.dao.SkillDao
-import ru.boringowl.myroadmapapp.data.room.dao.SkillTodoDao
+import ru.boringowl.myroadmapapp.data.network.api.TodoApi
 import ru.boringowl.myroadmapapp.data.room.dao.TodoDao
 import ru.boringowl.myroadmapapp.data.room.model.TodoEntity
 import ru.boringowl.myroadmapapp.model.Todo
-import java.util.*
 import javax.inject.Inject
 
 
@@ -33,10 +25,7 @@ class TodoRepository @Inject constructor(
         name: String,
         onError: suspend () -> Unit = {},
         onSuccess: suspend () -> Unit = {}
-    ) = loadWithIO(
-        onError = onError,
-        onSuccess = onSuccess
-    ) {
+    ) = loadWithIO(onError = onError, onSuccess = onSuccess) {
         val model = api.add(routeId, name)
         model.skills?.forEach {
             it.todo = model

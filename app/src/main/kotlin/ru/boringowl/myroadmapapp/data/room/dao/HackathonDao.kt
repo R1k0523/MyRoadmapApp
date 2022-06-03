@@ -4,7 +4,6 @@ import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
 import androidx.room.Transaction
-import kotlinx.coroutines.flow.Flow
 import ru.boringowl.myroadmapapp.data.room.model.HackathonEntity
 import java.util.*
 

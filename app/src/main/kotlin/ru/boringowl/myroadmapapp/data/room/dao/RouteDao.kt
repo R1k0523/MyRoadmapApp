@@ -5,8 +5,6 @@ import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 import ru.boringowl.myroadmapapp.data.room.model.RouteEntity
 import ru.boringowl.myroadmapapp.data.room.model.RouteWithSkills
-import ru.boringowl.myroadmapapp.model.Route
-import java.util.*
 
 @Dao
 interface RouteDao : BaseDao<RouteEntity> {

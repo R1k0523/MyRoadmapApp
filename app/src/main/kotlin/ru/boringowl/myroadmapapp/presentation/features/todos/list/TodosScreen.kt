@@ -1,14 +1,16 @@
 package ru.boringowl.myroadmapapp.presentation.features.todos.list
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.*
+import androidx.compose.material.icons.rounded.Close
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -19,10 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import ru.boringowl.myroadmapapp.R
-import ru.boringowl.myroadmapapp.model.Todo
 import ru.boringowl.myroadmapapp.presentation.base.rememberForeverLazyListState
 import ru.boringowl.myroadmapapp.presentation.base.resetScroll
-import ru.boringowl.myroadmapapp.presentation.navigation.NavigationItem
 
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class)
@@ -32,54 +32,7 @@ fun TodosScreen(
     viewModel: TodosViewModel = hiltViewModel(),
 ) {
     Scaffold(
-        topBar = {
-            SmallTopAppBar(title = {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    modifier = Modifier.padding(12.dp, 8.dp)
-                ) {
-                    if (viewModel.isSearchOpened)
-                        OutlinedTextField(
-                            value = viewModel.searchText,
-                            onValueChange = { viewModel.searchText = it },
-                            singleLine = true,
-                            modifier = Modifier
-                                .weight(1f)
-                                .height(50.dp),
-                            textStyle = MaterialTheme.typography.bodyMedium,
-                        )
-                    else {
-                        Text(
-                            modifier = Modifier.weight(1f),
-                            text = stringResource(R.string.nav_todos),
-                            style = MaterialTheme.typography.headlineSmall,
-                            fontWeight = FontWeight.Bold
-                        )
-                    }
-                    Spacer(modifier = Modifier.width(8.dp))
-                    val tag = stringResource(R.string.nav_todos)
-                    IconButton(modifier = Modifier.size(28.dp),
-                        onClick = {
-                            viewModel.isSearchOpened = !viewModel.isSearchOpened
-                            viewModel.searchText = ""
-                            resetScroll(tag)
-                        }) {
-                        if (viewModel.isSearchOpened)
-                            Icon(
-                                Icons.Rounded.Close,
-                                "Закрыть",
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        else
-                            Icon(
-                                Icons.Rounded.Search,
-                                "Найти",
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                    }
-                }
-            })
-        }
+        topBar = { TodosAppBar(viewModel)}
     ) { p ->
         val todos = viewModel.modelList.collectAsState(listOf()).value
         Column(
@@ -90,7 +43,7 @@ fun TodosScreen(
         ) {
             if (viewModel.filteredIsEmpty()) {
                 Text(
-                    "Ничего не найдено",
+                    text = stringResource(id = R.string.nothing_found),
                     style = MaterialTheme.typography.headlineMedium,
                     fontWeight = FontWeight.Normal,
                     color = MaterialTheme.colorScheme.primary,
@@ -119,76 +72,53 @@ fun TodosScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Composable
-fun TodoView(
-    navController: NavController,
-    t: Todo,
-    viewModel: TodosViewModel
-) {
-    var isMenuOpened by remember { mutableStateOf(false) }
-    ElevatedCard(
-        Modifier
-            .fillMaxWidth()
-            .padding(bottom = 8.dp)
-            .clickable { navController.navigate("todoDetails/${t.todoId}")  {
-                popUpTo(NavigationItem.Todo.route)
-            } }
-    ) {
+fun TodosAppBar(viewModel: TodosViewModel) {
+    SmallTopAppBar(title = {
         Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(12.dp, 8.dp)
         ) {
-            var progress = t.skills?.sumOf { it.progress } ?: 0
-            var all = t.skills?.size?.times(5) ?: 0
-            if (t.skills.isNullOrEmpty()) {
-                progress = t.ready
-                all = t.full
-            }
-            Column(Modifier.weight(1f)) {
+            if (viewModel.isSearchOpened)
+                OutlinedTextField(
+                    value = viewModel.searchText,
+                    onValueChange = { viewModel.searchText = it },
+                    singleLine = true,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(50.dp),
+                    textStyle = MaterialTheme.typography.bodyMedium,
+                )
+            else {
                 Text(
-                    t.header,
+                    modifier = Modifier.weight(1f),
+                    text = stringResource(R.string.nav_todos),
                     style = MaterialTheme.typography.headlineSmall,
-                    fontWeight = FontWeight.Medium
+                    fontWeight = FontWeight.Bold
                 )
-                Spacer(Modifier.height(4.dp))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Icon(
-                        Icons.Rounded.CheckBox,
-                        "Отмечено",
-                        tint = MaterialTheme.colorScheme.secondary
-                    )
-                    Spacer(Modifier.width(4.dp))
-                    Text(
-                        "$progress/$all",
-                        style = MaterialTheme.typography.bodyLarge,
-                        fontWeight = FontWeight.Light,
-                    )
-                }
             }
-            Box {
-                Icon(
-                    Icons.Rounded.MoreVert,
-                    "Закрыть",
-                    tint = MaterialTheme.colorScheme.secondary,
-                    modifier = Modifier.clickable { isMenuOpened = true}
-                )
-                DropdownMenu(
-                    expanded = isMenuOpened,
-                    onDismissRequest = { isMenuOpened = false },
-                    modifier = Modifier.height(40.dp)
-                ) {
-                    DropdownMenuItem(
-                        modifier = Modifier.height(40.dp),
-                        onClick = {
-                            viewModel.delete(t)
-                            isMenuOpened = false
-                                  },
-                        text = { Text("Удалить", Modifier.height(40.dp)) }
+            Spacer(modifier = Modifier.width(8.dp))
+            val tag = stringResource(R.string.nav_todos)
+            IconButton(modifier = Modifier.size(28.dp),
+                onClick = {
+                    viewModel.isSearchOpened = !viewModel.isSearchOpened
+                    viewModel.searchText = ""
+                    resetScroll(tag)
+                }) {
+                if (viewModel.isSearchOpened)
+                    Icon(
+                        Icons.Rounded.Close,
+                        "Закрыть",
+                        tint = MaterialTheme.colorScheme.primary
                     )
-                }
+                else
+                    Icon(
+                        Icons.Rounded.Search,
+                        "Найти",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
             }
         }
-    }
+    })
 }

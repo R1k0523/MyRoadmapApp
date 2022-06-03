@@ -1,6 +1,5 @@
 package ru.boringowl.myroadmapapp.presentation.features.todos.list
 
-import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -9,11 +8,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
-import ru.boringowl.myroadmapapp.data.room.repos.RouteRepository
-import ru.boringowl.myroadmapapp.data.room.repos.SkillRepository
 import ru.boringowl.myroadmapapp.data.room.repos.TodoRepository
-import ru.boringowl.myroadmapapp.model.Route
-import ru.boringowl.myroadmapapp.model.Skill
 import ru.boringowl.myroadmapapp.model.Todo
 import ru.boringowl.myroadmapapp.presentation.base.launchIO
 import javax.inject.Inject

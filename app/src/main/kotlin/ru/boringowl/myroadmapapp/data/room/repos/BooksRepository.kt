@@ -1,11 +1,10 @@
 package ru.boringowl.myroadmapapp.data.room.repos
 
-import android.util.Log
 import androidx.paging.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import ru.boringowl.myroadmapapp.data.network.BookPostApi
-import ru.boringowl.myroadmapapp.data.network.BookRemoteMediator
+import ru.boringowl.myroadmapapp.data.network.api.BookPostApi
+import ru.boringowl.myroadmapapp.data.network.mediators.BookRemoteMediator
 import ru.boringowl.myroadmapapp.data.room.AppDatabase
 import ru.boringowl.myroadmapapp.data.room.dao.BookPostDao
 import ru.boringowl.myroadmapapp.data.room.model.BookPostEntity

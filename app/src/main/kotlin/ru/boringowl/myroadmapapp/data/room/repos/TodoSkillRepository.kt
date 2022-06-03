@@ -1,15 +1,11 @@
 package ru.boringowl.myroadmapapp.data.room.repos
 
-import android.util.Log
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import ru.boringowl.myroadmapapp.data.network.SkillTodoApi
+import ru.boringowl.myroadmapapp.data.network.api.SkillTodoApi
 import ru.boringowl.myroadmapapp.data.room.dao.SkillTodoDao
 import ru.boringowl.myroadmapapp.data.room.dao.TodoDao
 import ru.boringowl.myroadmapapp.data.room.model.SkillTodoEntity
@@ -24,8 +20,6 @@ class TodoSkillRepository @Inject constructor(
     private val todoDao: TodoDao,
     private val api: SkillTodoApi
 ) {
-    private var isLoading by mutableStateOf(false)
-
 
     private fun entity(model: SkillTodo, todoId: UUID? = null) = SkillTodoEntity(model, todoId)
 

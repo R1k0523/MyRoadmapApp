@@ -1,6 +1,5 @@
 package ru.boringowl.myroadmapapp.presentation.features.routes
 
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -31,12 +30,8 @@ class RoutesViewModel @Inject constructor(
     var pickedRoute by mutableStateOf(-1)
 
     fun fetch() {
-        launchIO {
-            repository.get().distinctUntilChanged().collect {  _modelList.value = it }
-        }
-        launchIO {
-            repository.fetchAndSave()
-        }
+        launchIO { repository.get().distinctUntilChanged().collect {  _modelList.value = it } }
+        launchIO { repository.fetchAndSave() }
     }
 
     fun filteredIsEmpty() = modelList.value.none { isFiltered(it) }

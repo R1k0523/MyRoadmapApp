@@ -32,31 +32,27 @@ fun SignInScreen(navController: NavController, viewModel: SignInViewModel = hilt
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-
             Column(Modifier.fillMaxWidth().fillMaxHeight(0.3f)) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_myroadmap),
-                    contentDescription = "Logo",
+                    contentDescription = stringResource(R.string.logo),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .fillMaxSize()
                 )
             }
             Column(
-                Modifier.fillMaxWidth().fillMaxSize(),
+                modifier = Modifier.fillMaxWidth().fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                Spacer(modifier = Modifier.height(32.dp))
                 OutlinedTextField(
                     value = viewModel.username,
                     onValueChange = { viewModel.setNewUsername(it) },
                     label = { Text(stringResource(R.string.username)) },
                     singleLine = true,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(top = 32.dp, bottom = 8.dp),
                     isError = viewModel.isError(),
                 )
-                Spacer(modifier = Modifier.height(8.dp))
-
                 PasswordTextField(
                     password = viewModel.password,
                     onPasswordChange = { viewModel.setNewPassword(it) },
@@ -69,12 +65,11 @@ fun SignInScreen(navController: NavController, viewModel: SignInViewModel = hilt
                     modifier = Modifier
                         .clickable { navController.navigate(NavigationItem.ForgotPassword.route) }
                         .fillMaxWidth()
-                        .padding(5.dp),
+                        .padding(6.dp),
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary,
                     text = stringResource(R.string.forgot_password)
                 )
-                Spacer(modifier = Modifier.height(16.dp))
                 when (val state = viewModel.state.value) {
                     is SignInState.Error -> Text(
                         text = state.error,
@@ -84,7 +79,7 @@ fun SignInScreen(navController: NavController, viewModel: SignInViewModel = hilt
                     else -> {}
                 }
                 LoadingButton(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
                     onClick = { viewModel.signIn() },
                     loading = !viewModel.isUIEnabled(),
                     text = stringResource(R.string.signin),
@@ -96,9 +91,7 @@ fun SignInScreen(navController: NavController, viewModel: SignInViewModel = hilt
                         .clickable { navController.navigate(NavigationItem.Register.route) }
                         .padding(0.dp, 8.dp)
                 ) {
-                    Text(
-                        text = stringResource(R.string.has_no_account)
-                    )
+                    Text(stringResource(R.string.has_no_account))
                     Spacer(Modifier.weight(1f))
                     Text(
                         text = stringResource(R.string.signup),

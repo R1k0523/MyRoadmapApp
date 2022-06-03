@@ -1,4 +1,4 @@
-package ru.boringowl.myroadmapapp.data.network
+package ru.boringowl.myroadmapapp.data.network.dto
 
 import retrofit2.HttpException
 

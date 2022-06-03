@@ -1,4 +1,4 @@
-package ru.boringowl.myroadmapapp.model
+package ru.boringowl.myroadmapapp.data.network.dto
 
 class PageResponse<T>(
     val content: List<T>,

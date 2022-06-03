@@ -1,20 +1,14 @@
 package ru.boringowl.myroadmapapp.data.room.converters
 
 import androidx.room.TypeConverter
-import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.reflect.TypeToken
 import ru.boringowl.myroadmapapp.model.BookInfo
 import ru.boringowl.myroadmapapp.model.UserRole
-import java.time.LocalDateTime
 
 object RoomConverters {
     private val gson = GsonBuilder().setLenient().create()
 
-    @TypeConverter
-    fun toDate(dateString: String): LocalDateTime = dateString.let { LocalDateTime.parse(it) }
-    @TypeConverter
-    fun toDateString(date: LocalDateTime): String = date.toString()
     @TypeConverter
     fun stringToRole(name: String): UserRole = UserRole.valueOf(name)
     @TypeConverter

@@ -1,6 +1,6 @@
 package ru.boringowl.myroadmapapp.model
 
-import ru.boringowl.myroadmapapp.model.utils.format
+import ru.boringowl.myroadmapapp.presentation.base.format
 import java.util.*
 
 class BookPost(
@@ -18,7 +18,7 @@ class BookInfo (
 
 ) {
     fun sizeString(): String {
-        var sizeKb = size.toDouble() / 1000
+        val sizeKb = size.toDouble() / 1000
         return if (sizeKb > 1000) "${(sizeKb / 1000).format(2)} МБайт"
         else "${sizeKb.format(2)} КБайт"
     }

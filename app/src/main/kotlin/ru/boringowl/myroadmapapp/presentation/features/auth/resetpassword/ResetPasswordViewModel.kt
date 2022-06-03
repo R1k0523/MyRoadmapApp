@@ -8,8 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import ru.boringowl.myroadmapapp.data.network.dto.RestorePasswordData
 import ru.boringowl.myroadmapapp.data.room.repos.UserRepository
-import ru.boringowl.myroadmapapp.model.RestorePasswordData
 import javax.inject.Inject
 
 @HiltViewModel

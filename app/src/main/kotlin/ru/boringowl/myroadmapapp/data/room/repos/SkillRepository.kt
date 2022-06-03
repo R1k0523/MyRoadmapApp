@@ -1,15 +1,11 @@
 package ru.boringowl.myroadmapapp.data.room.repos
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.conflate
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.map
-import kotlinx.coroutines.withContext
-import ru.boringowl.myroadmapapp.data.network.SkillApi
+import ru.boringowl.myroadmapapp.data.network.api.SkillApi
 import ru.boringowl.myroadmapapp.data.room.dao.RouteDao
 import ru.boringowl.myroadmapapp.data.room.dao.SkillDao
 import ru.boringowl.myroadmapapp.data.room.model.SkillEntity
@@ -22,7 +18,6 @@ class SkillRepository @Inject constructor(
     private val routeDao: RouteDao,
     private val api: SkillApi
 ) {
-    var isLoading by mutableStateOf(false)
 
     private fun entity(model: Skill) = SkillEntity(model)
 
@@ -38,22 +33,11 @@ class SkillRepository @Inject constructor(
 
     }
 
-    suspend fun fetchAndSave(routeId: Int) {
-        withContext(Dispatchers.IO) {
-            isLoading = true
-            try {
-                val models = api.getByRoute(routeId).items
-                models.forEach {
-                    it.apply {
-                        route = routeDao.get(routeId)?.toModel()
-                    }
-                    add(it)
-                }
-            } catch (ex: Exception) {
-                ex.printStackTrace()
-            } finally {
-                isLoading = false
-            }
+    suspend fun fetchAndSave(routeId: Int) = loadWithIO {
+        val models = api.getByRoute(routeId).items
+        models.forEach {
+            it.apply { route = routeDao.get(routeId)?.toModel() }
+            add(it)
         }
     }
 }

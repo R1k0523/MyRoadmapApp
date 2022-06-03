@@ -1,10 +1,12 @@
-package ru.boringowl.myroadmapapp.data.network
+package ru.boringowl.myroadmapapp.data.network.api
 
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
-import ru.boringowl.myroadmapapp.model.*
+import ru.boringowl.myroadmapapp.data.network.ConstantsServer
+import ru.boringowl.myroadmapapp.data.network.dto.*
+import ru.boringowl.myroadmapapp.model.User
 
 interface UserApi {
     @GET(ConstantsServer.authEndpoint)

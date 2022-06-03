@@ -1,8 +1,9 @@
 package ru.boringowl.myroadmapapp.data.room.model
 
 
-import androidx.room.*
-import ru.boringowl.myroadmapapp.model.Skill
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import ru.boringowl.myroadmapapp.model.SkillTodo
 import ru.boringowl.myroadmapapp.model.Todo
 import java.util.*

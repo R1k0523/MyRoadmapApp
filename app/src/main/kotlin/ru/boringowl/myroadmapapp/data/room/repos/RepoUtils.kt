@@ -1,10 +1,9 @@
 package ru.boringowl.myroadmapapp.data.room.repos
 
-import android.util.Log
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import retrofit2.HttpException
-import ru.boringowl.myroadmapapp.data.network.errorText
+import ru.boringowl.myroadmapapp.data.network.dto.errorText
 import java.net.UnknownHostException
 
 suspend fun loadWithIO(
@@ -23,7 +22,6 @@ suspend fun loadWithIO(
         } catch (e: UnknownHostException) {
             onNetworkError("Отсутствует интернет-соединение")
         } catch (ex: Exception) {
-            Log.e("OSHIBKA", ex.message.toString())
             onError()
         } finally {
             onFinish()

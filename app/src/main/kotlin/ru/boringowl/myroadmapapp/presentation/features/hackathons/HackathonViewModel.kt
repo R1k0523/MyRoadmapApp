@@ -8,16 +8,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import androidx.paging.filter
-import androidx.paging.map
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flow
 import ru.boringowl.myroadmapapp.data.room.repos.HackathonRepository
 import ru.boringowl.myroadmapapp.model.Hackathon
-import ru.boringowl.myroadmapapp.model.Route
 import ru.boringowl.myroadmapapp.presentation.base.launchIO
 import javax.inject.Inject
 

@@ -25,8 +25,11 @@ import ru.boringowl.myroadmapapp.presentation.base.LoadingButton
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalTextApi::class)
 @Composable
-fun ResetPasswordScreen(navController: NavController, viewModel: ResetPasswordViewModel = hiltViewModel()) {
-    Scaffold() { padding ->
+fun ResetPasswordScreen(
+    navController: NavController,
+    viewModel: ResetPasswordViewModel = hiltViewModel()
+) {
+    Scaffold { padding ->
         Column(
             modifier = Modifier
                 .padding(padding)
@@ -34,17 +37,22 @@ fun ResetPasswordScreen(navController: NavController, viewModel: ResetPasswordVi
                 .padding(32.dp, 0.dp),
             verticalArrangement = Arrangement.Center,
         ) {
-            Column(Modifier.fillMaxWidth().fillMaxHeight(0.3f)) {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.3f)) {
                 Icon(
                     imageVector = ImageVector.vectorResource(R.drawable.ic_myroadmap),
-                    contentDescription = "Logo",
+                    contentDescription = stringResource(R.string.logo),
                     tint = MaterialTheme.colorScheme.primary,
                     modifier = Modifier
                         .fillMaxSize()
                 )
             }
             Column(
-                Modifier.fillMaxWidth().fillMaxSize(),
+                Modifier
+                    .fillMaxWidth()
+                    .fillMaxSize(),
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 Spacer(modifier = Modifier.height(32.dp))
@@ -57,6 +65,7 @@ fun ResetPasswordScreen(navController: NavController, viewModel: ResetPasswordVi
         }
     }
 }
+
 @Composable
 fun OnDefault(navController: NavController, viewModel: ResetPasswordViewModel) {
     OutlinedTextField(
@@ -64,27 +73,21 @@ fun OnDefault(navController: NavController, viewModel: ResetPasswordViewModel) {
         onValueChange = { viewModel.setNewUsername(it) },
         label = { Text(stringResource(R.string.username)) },
         singleLine = true,
-        modifier = Modifier.fillMaxWidth(),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            unfocusedBorderColor = if (viewModel.isError())
-                MaterialTheme.colorScheme.error else
-                MaterialTheme.colorScheme.onBackground
-        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
+        isError = viewModel.isError()
     )
-    Spacer(modifier = Modifier.height(8.dp))
     OutlinedTextField(
         value = viewModel.email,
         onValueChange = { viewModel.setNewEmail(it) },
         label = { Text(stringResource(R.string.email)) },
         singleLine = true,
-        modifier = Modifier.fillMaxWidth(),
-        colors = TextFieldDefaults.outlinedTextFieldColors(
-            unfocusedBorderColor = if (viewModel.isError())
-                MaterialTheme.colorScheme.error else
-                MaterialTheme.colorScheme.onBackground
-        ),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
+        isError = viewModel.isError()
     )
-    Spacer(modifier = Modifier.height(8.dp))
     when (val state = viewModel.state.value) {
         is ResetPasswordState.Error -> Text(
             text = state.error,
@@ -97,9 +100,10 @@ fun OnDefault(navController: NavController, viewModel: ResetPasswordViewModel) {
             textAlign = TextAlign.Center
         )
     }
-    Spacer(modifier = Modifier.height(8.dp))
     LoadingButton(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 8.dp),
         onClick = { viewModel.resetPassword() },
         loading = !viewModel.isUIEnabled(),
         text = stringResource(R.string.reset_password),
@@ -107,12 +111,13 @@ fun OnDefault(navController: NavController, viewModel: ResetPasswordViewModel) {
     Divider(
         Modifier
             .fillMaxWidth(0.6f)
-            .padding(0.dp, 20.dp))
+            .padding(0.dp, 20.dp)
+    )
     Row(
         Modifier
             .fillMaxWidth()
-            .clickable { navController.popBackStack() }
-            .padding(0.dp, 8.dp)) {
+            .padding(0.dp, 8.dp)
+            .clickable { navController.popBackStack() }) {
         Text(stringResource(R.string.has_account))
         Spacer(Modifier.weight(1f))
         Text(
@@ -128,19 +133,17 @@ fun OnDefault(navController: NavController, viewModel: ResetPasswordViewModel) {
 fun OnSuccess(navController: NavController) {
     Text(stringResource(R.string.reset_password_success))
     Icon(
-        Icons.Rounded.Done,
-        "Зарегистрироваться",
+        imageVector = Icons.Rounded.Done,
+        contentDescription = stringResource(R.string.signup),
         tint = MaterialTheme.colorScheme.onPrimary,
         modifier = Modifier
             .size(70.dp)
-            .padding(15.dp)
+            .padding(16.dp)
             .clip(CircleShape)
             .background(MaterialTheme.colorScheme.primary)
     )
-
-    Spacer(modifier = Modifier.height(16.dp))
     Button(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth().padding(top = 16.dp),
         onClick = { navController.popBackStack() },
     ) {
         Text(stringResource(R.string.back))

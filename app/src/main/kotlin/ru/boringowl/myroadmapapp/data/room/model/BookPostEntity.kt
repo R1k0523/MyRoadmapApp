@@ -5,8 +5,6 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 import ru.boringowl.myroadmapapp.model.BookInfo
 import ru.boringowl.myroadmapapp.model.BookPost
-import ru.boringowl.myroadmapapp.model.Route
-import ru.boringowl.myroadmapapp.model.Skill
 import java.util.*
 
 @Entity(tableName = "book_posts")

@@ -1,12 +1,8 @@
 package ru.boringowl.myroadmapapp.data.room.dao
 
-import androidx.paging.PagingSource
 import androidx.room.Dao
 import androidx.room.Query
-import androidx.room.Transaction
 import ru.boringowl.myroadmapapp.data.room.model.BookPostRemoteKeys
-import ru.boringowl.myroadmapapp.data.room.model.HackathonEntity
-import ru.boringowl.myroadmapapp.data.room.model.HackathonRemoteKeys
 import java.util.*
 
 

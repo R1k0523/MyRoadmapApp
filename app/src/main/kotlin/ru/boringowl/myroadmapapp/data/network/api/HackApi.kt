@@ -1,12 +1,11 @@
-package ru.boringowl.myroadmapapp.data.network
+package ru.boringowl.myroadmapapp.data.network.api
 
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
+import ru.boringowl.myroadmapapp.data.network.ConstantsServer
+import ru.boringowl.myroadmapapp.data.network.dto.PageResponse
 import ru.boringowl.myroadmapapp.model.Hackathon
-import ru.boringowl.myroadmapapp.model.ListResponse
-import ru.boringowl.myroadmapapp.model.PageResponse
-import ru.boringowl.myroadmapapp.model.PagedResponse
 import java.util.*
 
 interface HackApi {

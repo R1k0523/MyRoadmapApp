@@ -8,7 +8,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import ru.boringowl.myroadmapapp.data.datastore.DataStorage
 import ru.boringowl.myroadmapapp.data.datastore.DataStorageImpl
-import ru.boringowl.myroadmapapp.data.network.*
+import ru.boringowl.myroadmapapp.data.network.api.*
 import ru.boringowl.myroadmapapp.data.room.AppDatabase
 import ru.boringowl.myroadmapapp.data.room.dao.*
 import ru.boringowl.myroadmapapp.data.room.repos.*

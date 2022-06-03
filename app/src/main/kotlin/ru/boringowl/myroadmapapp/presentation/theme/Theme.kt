@@ -130,7 +130,7 @@ val LocalExtendedColors = staticCompositionLocalOf {
 @Composable
 fun HarmonizedTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
-    isDynamic: Boolean = false,
+    isDynamic: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val colors = if (isDynamic) {

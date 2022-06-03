@@ -1,11 +1,11 @@
-package ru.boringowl.myroadmapapp.data.network
+package ru.boringowl.myroadmapapp.data.network.mediators
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
 import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
+import ru.boringowl.myroadmapapp.data.network.api.HackApi
 import ru.boringowl.myroadmapapp.data.room.AppDatabase
 import ru.boringowl.myroadmapapp.data.room.model.HackathonEntity
 import ru.boringowl.myroadmapapp.data.room.model.HackathonRemoteKeys

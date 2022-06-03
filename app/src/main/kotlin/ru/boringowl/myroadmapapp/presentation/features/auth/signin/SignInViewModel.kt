@@ -7,10 +7,9 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import ru.boringowl.myroadmapapp.data.network.dto.LoginData
 import ru.boringowl.myroadmapapp.data.room.repos.UserRepository
-import ru.boringowl.myroadmapapp.model.LoginData
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,10 +23,7 @@ class SignInViewModel @Inject constructor(val userRepository: UserRepository) : 
         viewModelScope.launch {
             state.value = SignInState.Loading()
             userRepository.login(
-                LoginData(
-                    username,
-                    password
-                ),
+                LoginData(username, password),
                 onSuccess = { state.value = SignInState.Success() },
                 onError = { state.value = SignInState.Error(it) },
             )

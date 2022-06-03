@@ -49,6 +49,4 @@ class DataStorageImpl @Inject constructor(@ApplicationContext context: Context) 
             it[PreferenceKeys.AUTH_TOKEN] = ""
         }
     }
-
-
 }
