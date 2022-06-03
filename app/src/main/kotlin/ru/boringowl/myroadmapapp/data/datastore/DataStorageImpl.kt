@@ -9,6 +9,7 @@ import androidx.datastore.preferences.preferencesDataStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import ru.boringowl.myroadmapapp.presentation.base.Themes
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,7 +26,7 @@ class DataStorageImpl @Inject constructor(@ApplicationContext context: Context) 
     }
 
     override fun selectedTheme() = dataStore.data.map {
-        it[PreferenceKeys.SELECTED_THEME] ?: "light"
+        it[PreferenceKeys.SELECTED_THEME] ?: Themes.SYSTEM.name
     }
 
 

@@ -93,7 +93,7 @@ fun SkillsTopBar(viewModel: SkillsViewModel) {
                 )
             }
             val tag = stringResource(R.string.nav_skills)
-            IconButton(modifier = Modifier.size(28.dp).padding(8.dp),
+            IconButton(modifier = Modifier.size(28.dp).padding(top = 8.dp),
                 onClick = {
                     viewModel.isSearchOpened = !viewModel.isSearchOpened
                     viewModel.searchText = ""

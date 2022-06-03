@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">myroadmapapp</string>
+    <string name="app_name">MyRoadmap</string>
     <string name="nav_profile">Профиль</string>
     <string name="nav_hackathon">Хакатоны</string>
     <string name="nav_routes">Направления</string>
